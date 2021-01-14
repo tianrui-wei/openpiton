@@ -118,6 +118,13 @@ for {set k 0} {$k < $::env(PITON_NUM_TILES)} {incr k} {
 
 puts "INFO: Using Defines: ${ALL_DEFAULT_VERILOG_MACROS}"
 
+# credit goes to https://github.com/PrincetonUniversity/openpiton/issues/50
+# and https://www.xilinx.com/support/answers/72570.html
+set tmp_PYTHONPATH $env(PYTHONPATH)
+set tmp_PYTHONHOME $env(PYTHONHOME)
+unset env(PYTHONPATH)
+unset env(PYTHONHOME)
+
 # Pre-process PyHP files
 source $DV_ROOT/tools/src/proto/common/pyhp_preprocess.tcl
 set ALL_RTL_IMPL_FILES [pyhp_preprocess ${ALL_RTL_IMPL_FILES}]
@@ -130,17 +137,33 @@ if  {[info exists ::env(PITON_ARIANE)]} {
   
   
   set TMP [pwd]
+  # copy the dts for the bare metal bootrom first
+  exec cp $::env(PITON_ROOT)/piton/design/common/uboot/arch/riscv/dts/openpiton-riscv64.dts $::env(ARIANE_ROOT)/openpiton/bootrom/ariane.dts
   cd $::env(ARIANE_ROOT)/openpiton/bootrom/baremetal
   # Note: dd dumps info to stderr that we do not want to interpret
   # otherwise this command fails...
   puts "INFO: making bare metal bootloader"
   exec make clean 2> /dev/null
-  exec make all  2> /dev/null 
-  cd $::env(ARIANE_ROOT)/openpiton/bootrom/linux
+  exec make all 2> /dev/null
+  puts "INFO: bare metal firmware generation complete"
+  # then we generate the spl image
+  cd $::env(PITON_ROOT)/piton/design/common/uboot
+  # FIXME: find a better way to handle branches in git submodules
+  # exec git checkout dual-core
   # Note: dd dumps info to stderr that we do not want to interpret
   # otherwise this command fails...
-  exec make clean 2> /dev/null
-  exec make all MAX_HARTS=$::env(PITON_NUM_TILES) UART_FREQ=$::env(CONFIG_SYS_FREQ) 2> /dev/null
+  exec make distclean 2> /dev/null
+  exec make ARCH=riscv CROSS_COMPILE=~/piton/xpack-riscv-none-embed-gcc-10.1.0-1.1/bin/riscv-none-embed- openpiton_riscv64_spl_defconfig
+  #TODO: update riscv toochain
+  exec make CROSS_COMPILE=$::env(RISCV_TOOLCHAIN)/bin/riscv-none-embed- -j8 2> /dev/null
+  # generate mover using the spl image
+  cd $::env(PITON_ROOT)/piton/design/common/mover/
+  exec make clean
+  exec make 2> /dev/null
+  # generate the linux bootrom using mover image
+  exec cp mover.sv $::env(ARIANE_ROOT)/openpiton/bootrom/linux/bootrom_linux.sv
+  cd $::env(ARIANE_ROOT)/openpiton/bootrom/linux/
+  exec sed -i {s/mover/bootrom_linux/g} bootrom_linux.sv
   puts "INFO: done"
   # two targets per hart (M,S) and two interrupt sources (UART, Ethernet)
   set NUM_TARGETS [expr 2*$::env(PITON_NUM_TILES)]
@@ -155,3 +178,5 @@ if  {[info exists ::env(PITON_ARIANE)]} {
   set ::env(PYTHONHOME) $tmp_PYTHONHOME 
 }
 
+set env(PYTHONPATH) $tmp_PYTHONPATH
+set env(PYTHONHOME) $tmp_PYTHONHOME
