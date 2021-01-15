@@ -2199,6 +2199,7 @@ sub assemble_diag
     if ($opt{ariane} and $opt{precompiled}) {
       push @{$opt{asm_diag_root}}, "$ENV{ARIANE_ROOT}/tmp/riscv-tests/build/isa";
       push @{$opt{asm_diag_root}}, "$ENV{ARIANE_ROOT}/tmp/riscv-tests/build/benchmarks";
+      push @{$opt{asm_diag_root}}, "/home/eva/piton/piton_bin";
     }
 
     # find diagnostic
