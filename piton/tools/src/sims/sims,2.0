@@ -1616,43 +1616,43 @@ sub generic_sim_run
     die ("DIE. obj_dir/ not found in $model_path") if ($opt{vlt_run} and ! -d "$model_path/obj_dir") ;
 
     # pass the good trap and bad trap addresses to the testbench
-    my $good_trap = "";
-    my $bad_trap = "";
+    my $good_trap = "0xFFFFFFFFFF";
+    my $bad_trap = "0xFFFFFFFFFF";
 
-    if (($opt{asm_diag_name} ne "") or ($opt{image_diag_name} ne ""))
-    {
-      die ("DIE. could not find symbol.tbl file") if (!-f "symbol.tbl") ;
-
-      my @good_trap_list = `grep -w good_trap symbol.tbl`;
-      my @bad_trap_list = `grep -w bad_trap symbol.tbl`;
-      my %good_trap_list ;
-      my %bad_trap_list ;
-      my @good_trap ;
-      my @bad_trap ;
-
-      if ($#good_trap_list >= 0) {
-        $good_trap = "" ;
-        my $trap_i=0;
-        foreach my $trap (@good_trap_list) {
-          my ($tmp1, $va, $ra, $pa) = ($trap =~ /([\w_\.]+)\s+(\w+)\s+(\w+)\s+(\w+)/) ;
-          $good_trap .= " +good_trap$trap_i=" . $pa ;
-          $trap_i++;
-          $good_trap_list{$pa} = 1 ;
-        }
-      }
-
-      if ($#bad_trap_list >= 0)
-      {
-        $bad_trap = "" ;
-        my $trap_i=0;
-        foreach my $trap (@bad_trap_list) {
-          my ($tmp1, $va, $ra, $pa) = ($trap =~ /([\w_\.]+)\s+(\w+)\s+(\w+)\s+(\w+)/) ;
-          $bad_trap .= " +bad_trap$trap_i=" . $pa ;
-          $trap_i++;
-          $bad_trap_list{$pa} = $pa;
-        }
-      }
-    }
+#    if (($opt{asm_diag_name} ne "") or ($opt{image_diag_name} ne ""))
+#    {
+#      die ("DIE. could not find symbol.tbl file") if (!-f "symbol.tbl") ;
+#
+#      my @good_trap_list = `grep -w good_trap symbol.tbl`;
+#      my @bad_trap_list = `grep -w bad_trap symbol.tbl`;
+#      my %good_trap_list ;
+#      my %bad_trap_list ;
+#      my @good_trap ;
+#      my @bad_trap ;
+#
+#      if ($#good_trap_list >= 0) {
+#        $good_trap = "" ;
+#        my $trap_i=0;
+#        foreach my $trap (@good_trap_list) {
+#          my ($tmp1, $va, $ra, $pa) = ($trap =~ /([\w_\.]+)\s+(\w+)\s+(\w+)\s+(\w+)/) ;
+#          $good_trap .= " +good_trap$trap_i=" . $pa ;
+#          $trap_i++;
+#          $good_trap_list{$pa} = 1 ;
+#        }
+#      }
+#
+#      if ($#bad_trap_list >= 0)
+#      {
+#        $bad_trap = "" ;
+#        my $trap_i=0;
+#        foreach my $trap (@bad_trap_list) {
+#          my ($tmp1, $va, $ra, $pa) = ($trap =~ /([\w_\.]+)\s+(\w+)\s+(\w+)\s+(\w+)/) ;
+#          $bad_trap .= " +bad_trap$trap_i=" . $pa ;
+#          $trap_i++;
+#          $bad_trap_list{$pa} = $pa;
+#        }
+#      }
+#    }
 
     # add in switches for signal dumping
 
