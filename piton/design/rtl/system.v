@@ -331,13 +331,14 @@ module system(
     input                                       sd_cd,
         `ifndef VCU118_BOARD
         `ifndef DUALVU440_BOARD
-        `ifndef VU19_LS_BOARD
+        `ifndef VU19P_LS_BOARD
     output                                      sd_reset,
         `endif
         `endif    
         `endif
     `endif
-    output                                      sd_clk_out,
+    output                                      sd_clk_out,    
+    output                                      sd_init_done,
     inout                                       sd_cmd,
     inout   [3:0]                               sd_dat,
 `endif // endif PITONSYS_SPI
@@ -1190,6 +1191,7 @@ chipset chipset(
     `endif
 
     `endif
+    .sd_init_done(sd_init_done),
     .sd_clk_out(sd_clk_out),
     .sd_cmd(sd_cmd),
     .sd_dat(sd_dat),

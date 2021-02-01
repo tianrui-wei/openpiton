@@ -333,6 +333,7 @@ module chipset(
 
     `ifdef PITONSYS_SPI
         `ifndef VC707_BOARD
+        output                                      sd_init_done,
         input                                       sd_cd,
         output                                      sd_reset,
         `endif
@@ -1421,6 +1422,7 @@ chipset_impl_noc_power_test  chipset_impl (
             .sd_reset(),
             `endif
             .sd_clk_out(sd_clk_out_internal),
+            .sd_init_done(sd_init_done),
             .sd_cmd(sd_cmd),
             .sd_dat(sd_dat)
         `endif // endif PITONSYS_SPI

@@ -238,12 +238,14 @@ module chipset_impl(
 
 `ifdef PITONSYS_SPI
     ,
+    output                                      sd_init_done,
     input                                       sd_clk,
     input                                       sd_cd,
     output                                      sd_reset,
     output                                      sd_clk_out,
     inout                                       sd_cmd,
     inout   [3:0]                               sd_dat
+
 `endif // endif PITONSYS_SPI
 `ifdef PITON_FPGA_ETHERNETLITE
     ,
@@ -263,6 +265,8 @@ module chipset_impl(
     output                                      net_phy_mdc
 `endif // PITON_FPGA_ETHERNETLITE
 `endif // endif PITONSYS_IO_CTRL
+    
+
 `ifdef PITON_ARIANE
     ,
     // Debug
@@ -289,6 +293,8 @@ module chipset_impl(
 ///////////////////////
 // Type declarations //
 ///////////////////////
+
+wire sd_init_done;
 wire                                            mc_ui_clk_sync_rst;
 
 reg                                             init_calib_complete_f;
@@ -995,11 +1001,13 @@ uart_top        uart_top (
 
         .splitter_sd_val  ( buf_sd_noc2_valid ),
         .splitter_sd_data ( buf_sd_noc2_data  ),
-        .sd_splitter_rdy  ( sd_buf_noc2_ready ),
+        .sd_splitter_rdy  ( sd_buf_noc2_ready ),        
 
         .sd_splitter_val  ( sd_buf_noc3_valid ),
         .sd_splitter_data ( sd_buf_noc3_data  ),
         .splitter_sd_rdy  ( buf_sd_noc3_ready ),
+
+        .sd_init_done     ( sd_init_done),
 
         .sd_cd            ( sd_cd             ),
         .sd_reset         ( sd_reset          ),

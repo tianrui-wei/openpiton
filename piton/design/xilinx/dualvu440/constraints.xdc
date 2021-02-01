@@ -124,6 +124,7 @@ set_property -dict {PACKAGE_PIN BM42 IOSTANDARD LVCMOS18} [get_ports {sd_dat[3]}
 set_property -dict {PACKAGE_PIN BN46 IOSTANDARD LVCMOS18} [get_ports sd_cmd]
 set_property -dict {PACKAGE_PIN BL40 IOSTANDARD LVCMOS18} [get_ports {sd_dat[0]}]
 set_property -dict {PACKAGE_PIN BN43 IOSTANDARD LVCMOS18} [get_ports sd_clk_out]
+set_property -dict {PACKAGE_PIN BL52 IOSTANDARD LVCMOS18} [get_ports sd_init_done]
 set_property -dict {PACKAGE_PIN BL39 IOSTANDARD LVCMOS18} [get_ports {sd_dat[1]}]
 set_property -dict {PACKAGE_PIN BM41 IOSTANDARD LVCMOS18} [get_ports {sd_dat[2]}]
 set_property -dict {PACKAGE_PIN BN44 IOSTANDARD LVCMOS18} [get_ports sd_cd]
@@ -167,14 +168,15 @@ set_property -dict {PACKAGE_PIN AV26 IOSTANDARD LVCMOS18} [get_ports {sw[1]}]
 # set_property -dict {PACKAGE_PIN AV36 IOSTANDARD LVCMOS12} [get_ports "leds[6]"] ;# Bank  42 VCCO - VCC1V2_FPGA - IO_L19N_T3L_N1_DBC_AD9N_42
 # set_property -dict {PACKAGE_PIN BA37 IOSTANDARD LVCMOS12} [get_ports "leds[7]"] ;# Bank  42 VCCO - VCC1V2_FPGA - IO_L13N_T2L_N1_GC_QBC_42
 
-set_property -dict {PACKAGE_PIN BP51 IOSTANDARD LVCMOS18} [get_ports {leds[0]}]
-set_property -dict {PACKAGE_PIN BP50 IOSTANDARD LVCMOS18} [get_ports {leds[1]}]
-set_property -dict {PACKAGE_PIN BL43 IOSTANDARD LVCMOS18} [get_ports {leds[2]}]
-set_property -dict {PACKAGE_PIN BF27 IOSTANDARD LVCMOS18} [get_ports {leds[3]}]
-set_property -dict {PACKAGE_PIN BD25 IOSTANDARD LVCMOS18} [get_ports {leds[4]}]
-set_property -dict {PACKAGE_PIN BB29 IOSTANDARD LVCMOS18} [get_ports {leds[5]}]
-set_property -dict {PACKAGE_PIN BC28 IOSTANDARD LVCMOS18} [get_ports {leds[6]}]
-# set_property -dict {PACKAGE_PIN  IOSTANDARD LVCMOS12} [get_ports "leds[7]"] ;# Bank  42 VCCO - VCC1V2_FPGA - IO_L13N_T2L_N1_GC_QBC_42
+
+set_property -dict {PACKAGE_PIN AW18 IOSTANDARD LVCMOS18} [get_ports {leds[0]}]
+set_property -dict {PACKAGE_PIN AV18 IOSTANDARD LVCMOS18} [get_ports {leds[1]}]
+set_property -dict {PACKAGE_PIN AU12 IOSTANDARD LVCMOS18} [get_ports {leds[2]}]
+set_property -dict {PACKAGE_PIN AT12 IOSTANDARD LVCMOS18} [get_ports {leds[3]}]
+set_property -dict {PACKAGE_PIN AU15 IOSTANDARD LVCMOS18} [get_ports {leds[4]}]
+set_property -dict {PACKAGE_PIN AT15 IOSTANDARD LVCMOS18} [get_ports {leds[5]}]
+set_property -dict {PACKAGE_PIN AW13 IOSTANDARD LVCMOS18} [get_ports {leds[6]}]
+set_property -dict {PACKAGE_PIN AV13 IOSTANDARD LVCMOS18} [get_ports "leds[7]"]
 
 ## Buttons
 # set_property -dict {PACKAGE_PIN BB24 IOSTANDARD LVCMOS18} [get_ports "btnu"] ;# Bank  64 VCCO - VCC1V8_FPGA - IO_L5P_T0U_N8_AD14P_64
@@ -183,11 +185,11 @@ set_property -dict {PACKAGE_PIN BC28 IOSTANDARD LVCMOS18} [get_ports {leds[6]}]
 # set_property -dict {PACKAGE_PIN BE23 IOSTANDARD LVCMOS18} [get_ports "btnr"] ;# Bank  64 VCCO - VCC1V8_FPGA - IO_L3N_T0L_N5_AD15N_64
 # set_property -dict {PACKAGE_PIN BD23 IOSTANDARD LVCMOS18} [get_ports "btnc"] ;# Bank  64 VCCO - VCC1V8_FPGA - IO_L3P_T0L_N4_AD15P_64
 
-# set_property -dict {PACKAGE_PIN BB24 IOSTANDARD LVCMOS18} [get_ports "btnu"] ;# Bank  64 VCCO - VCC1V8_FPGA - IO_L5P_T0U_N8_AD14P_64
-# set_property -dict {PACKAGE_PIN BF22 IOSTANDARD LVCMOS18} [get_ports "btnl"] ;# Bank  64 VCCO - VCC1V8_FPGA - IO_L4N_T0U_N7_DBC_AD7N_64
-# set_property -dict {PACKAGE_PIN BE22 IOSTANDARD LVCMOS18} [get_ports "btnd"] ;# Bank  64 VCCO - VCC1V8_FPGA - IO_L4P_T0U_N6_DBC_AD7P_64
-# set_property -dict {PACKAGE_PIN BE23 IOSTANDARD LVCMOS18} [get_ports "btnr"] ;# Bank  64 VCCO - VCC1V8_FPGA - IO_L3N_T0L_N5_AD15N_64
-# set_property -dict {PACKAGE_PIN BD23 IOSTANDARD LVCMOS18} [get_ports "btnc"] ;# Bank  64 VCCO - VCC1V8_FPGA - IO_L3P_T0L_N4_AD15P_64
+set_property -dict {PACKAGE_PIN AV24 IOSTANDARD LVCMOS18} [get_ports "btnu"] ;# Bank  64 VCCO - VCC1V8_FPGA - IO_L5P_T0U_N8_AD14P_64
+set_property -dict {PACKAGE_PIN AU24 IOSTANDARD LVCMOS18} [get_ports "btnl"] ;# Bank  64 VCCO - VCC1V8_FPGA - IO_L4N_T0U_N7_DBC_AD7N_64
+set_property -dict {PACKAGE_PIN AT22 IOSTANDARD LVCMOS18} [get_ports "btnd"] ;# Bank  64 VCCO - VCC1V8_FPGA - IO_L4P_T0U_N6_DBC_AD7P_64
+set_property -dict {PACKAGE_PIN AT23 IOSTANDARD LVCMOS18} [get_ports "btnr"] ;# Bank  64 VCCO - VCC1V8_FPGA - IO_L3N_T0L_N5_AD15N_64
+#set_property -dict {PACKAGE_PIN BD23 IOSTANDARD LVCMOS18} [get_ports "btnc"] ;# Bank  64 VCCO - VCC1V8_FPGA - IO_L3P_T0L_N4_AD15P_64
 
 ## Ethernet
 
@@ -508,7 +510,7 @@ set_clock_groups -asynchronous -group [get_clocks -include_generated_clocks chip
 
 
 
-set_property IOSTANDARD LVCMOS18 [get_ports {leds[7]}]
+
 set_property IOSTANDARD LVCMOS18 [get_ports {sw[3]}]
 set_property IOSTANDARD LVCMOS18 [get_ports {sw[2]}]
 
@@ -520,4 +522,14 @@ set_property IOSTANDARD LVCMOS18 [get_ports btnr]
 set_property IOSTANDARD LVCMOS18 [get_ports btnu]
 set_property IOSTANDARD LVCMOS18 [get_ports sys_rst_n]
 set_property PACKAGE_PIN BC27 [get_ports sys_rst_n]
-set_property PACKAGE_PIN BC19 [get_ports {leds[7]}]
+
+
+set_property CLOCK_DEDICATED_ROUTE BACKBONE [get_nets chipset_clk_osc_p]
+set_property CLOCK_DEDICATED_ROUTE BACKBONE [get_nets chipset_clk_osc_n]
+
+
+
+set_property C_CLK_INPUT_FREQ_HZ 300000000 [get_debug_cores dbg_hub]
+set_property C_ENABLE_CLK_DIVIDER false [get_debug_cores dbg_hub]
+set_property C_USER_SCAN_CHAIN 1 [get_debug_cores dbg_hub]
+connect_debug_port dbg_hub/clk [get_nets clk]

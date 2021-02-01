@@ -53,6 +53,7 @@ module piton_sd_top (
     output wire [`NOC_DATA_WIDTH-1:0]       sd_splitter_data,
     input  wire                             splitter_sd_rdy,
 
+    output wire                             sd_init_done,
     // SD interface
     input  wire                             sd_cd,
     output wire                             sd_reset,
@@ -147,6 +148,8 @@ module piton_sd_top (
     assign  sd_cmd_dat_i    =   sd_cmd;
     assign  sd_dat_dat_i    =   sd_dat;
     assign  sd_reset    =   sys_rst;
+    
+    assign sd_init_done = init_done;
 
     piton_sd_core_ctrl sd_core_ctrl (
         .clk                    (sys_clk),
