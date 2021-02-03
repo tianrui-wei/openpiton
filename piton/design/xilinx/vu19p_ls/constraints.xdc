@@ -36,8 +36,8 @@ set_property CONFIG_VOLTAGE 1.8 [current_design]
 # set_property -dict {PACKAGE_PIN F31 IOSTANDARD DIFF_SSTL12}        [get_ports "chipset_clk_osc_n"] ;# Bank  47 VCCO - VCC1V2_FPGA - IO_L13N_T2L_N1_GC_QBC_47
 # set_property -dict {PACKAGE_PIN G31 IOSTANDARD DIFF_SSTL12}        [get_ports "chipset_clk_osc_p"] ;# Bank  47 VCCO - VCC1V2_FPGA - IO_L13P_T2L_N0_GC_QBC_47
 
-set_property -dict {PACKAGE_PIN CB18 IOSTANDARD DIFF_SSTL12} [get_ports chipset_clk_osc_n];#Programmable clock pair2
-set_property -dict {PACKAGE_PIN CB19 IOSTANDARD DIFF_SSTL12} [get_ports chipset_clk_osc_p];#Programmable clock pair2
+set_property -dict {PACKAGE_PIN CB18 IOSTANDARD DIFF_SSTL12} [get_ports chipset_clk_osc_n]
+set_property -dict {PACKAGE_PIN CB19 IOSTANDARD DIFF_SSTL12} [get_ports chipset_clk_osc_p]
 
 
 # ref clock for MIG
@@ -47,10 +47,10 @@ set_property -dict {PACKAGE_PIN CB19 IOSTANDARD DIFF_SSTL12} [get_ports chipset_
 # set_property PACKAGE_PIN D12 [ get_ports "mc_clk_n" ]
 # set_property IOSTANDARD DIFF_SSTL12 [ get_ports "mc_clk_n" ]
 
-set_property IOSTANDARD DIFF_SSTL12 [get_ports mc_clk_p];#Programmable clock pair7
-set_property PACKAGE_PIN Y52 [get_ports mc_clk_p];#Programmable clock pair7
-set_property PACKAGE_PIN Y53 [get_ports mc_clk_n];#Programmable clock pair7
-set_property IOSTANDARD DIFF_SSTL12 [get_ports mc_clk_n];#Programmable clock pair7
+set_property IOSTANDARD DIFF_SSTL12 [get_ports mc_clk_p]
+set_property PACKAGE_PIN Y52 [get_ports mc_clk_p]
+set_property PACKAGE_PIN Y53 [get_ports mc_clk_n]
+set_property IOSTANDARD DIFF_SSTL12 [get_ports mc_clk_n]
 
 
 set_property CLOCK_DEDICATED_ROUTE BACKBONE [get_nets chipset/clk_mmcm/inst/clkin1_ibufds/O]
@@ -127,6 +127,7 @@ set_property -dict {PACKAGE_PIN BM27 IOSTANDARD LVCMOS18} [get_ports sd_clk_out]
 set_property -dict {PACKAGE_PIN BM29 IOSTANDARD LVCMOS18} [get_ports {sd_dat[1]}]
 set_property -dict {PACKAGE_PIN BR28 IOSTANDARD LVCMOS18} [get_ports {sd_dat[2]}]
 set_property -dict {PACKAGE_PIN BM26 IOSTANDARD LVCMOS18} [get_ports sd_cd]
+set_property -dict {PACKAGE_PIN AD15 IOSTANDARD LVCMOS18} [get_ports sd_init_done]
 # no reset on this board. this is the write-protect signal.
 #set_property -dict {PACKAGE_PIN BN47 IOSTANDARD LVCMOS18} [get_ports "sd_reset"]   ;# Bank  67 VCCO - VADJ_1V8_FPGA - IO_L7P_T1L_N0_QBC_AD13P_67
 
@@ -152,8 +153,8 @@ set_property -dict {PACKAGE_PIN BL15 IOSTANDARD LVCMOS18} [get_ports uart_rts]
 # set_property -dict {PACKAGE_PIN D21 IOSTANDARD LVCMOS12} [get_ports "sw[3]"] ;# Bank  72 VCCO - VCC1V2_FPGA - IO_T3U_N12_72
 
 
-set_property -dict {PACKAGE_PIN U13 IOSTANDARD LVCMOS18} [get_ports {sw[0]}];#S2.1
-set_property -dict {PACKAGE_PIN U14 IOSTANDARD LVCMOS18} [get_ports {sw[1]}];#S2.2
+set_property -dict {PACKAGE_PIN U13 IOSTANDARD LVCMOS18} [get_ports {sw[0]}]
+set_property -dict {PACKAGE_PIN U14 IOSTANDARD LVCMOS18} [get_ports {sw[1]}]
 # set_property -dict {PACKAGE_PIN J16 IOSTANDARD LVCMOS12} [get_ports "sw[2]"] ;# Bank  73 VCCO - VCC1V2_FPGA - IO_L7N_T1L_N1_QBC_AD13N_73
 # set_property -dict {PACKAGE_PIN D21 IOSTANDARD LVCMOS12} [get_ports "sw[3]"] ;# Bank  72 VCCO - VCC1V2_FPGA - IO_T3U_N12_72
 
@@ -163,7 +164,7 @@ set_property IOSTANDARD LVCMOS18 [get_ports {sw[2]}]
 set_property CFGBVS GND [current_design]
 
 set_property IOSTANDARD LVCMOS18 [get_ports sys_rst_n]
-set_property PACKAGE_PIN AC13 [get_ports sys_rst_n];#SW2
+set_property PACKAGE_PIN AC13 [get_ports sys_rst_n]
 
 # LEDs
 # set_property -dict {PACKAGE_PIN AT32 IOSTANDARD LVCMOS12} [get_ports "leds[0]"] ;# Bank  40 VCCO - VCC1V2_FPGA - IO_L19N_T3L_N1_DBC_AD9N_40
@@ -175,14 +176,14 @@ set_property PACKAGE_PIN AC13 [get_ports sys_rst_n];#SW2
 # set_property -dict {PACKAGE_PIN AV36 IOSTANDARD LVCMOS12} [get_ports "leds[6]"] ;# Bank  42 VCCO - VCC1V2_FPGA - IO_L19N_T3L_N1_DBC_AD9N_42
 # set_property -dict {PACKAGE_PIN BA37 IOSTANDARD LVCMOS12} [get_ports "leds[7]"] ;# Bank  42 VCCO - VCC1V2_FPGA - IO_L13N_T2L_N1_GC_QBC_42
 
-set_property -dict {PACKAGE_PIN AD15 IOSTANDARD LVCMOS18} [get_ports {leds[0]}]; #led35
-set_property -dict {PACKAGE_PIN AD16 IOSTANDARD LVCMOS18} [get_ports {leds[1]}]; #led36
-set_property -dict {PACKAGE_PIN AD17 IOSTANDARD LVCMOS18} [get_ports {leds[2]}]; #led37
-set_property -dict {PACKAGE_PIN V16 IOSTANDARD LVCMOS18} [get_ports {leds[3]}];  #J16.1
-set_property -dict {PACKAGE_PIN W15 IOSTANDARD LVCMOS18} [get_ports {leds[4]}];  #J16.2
-set_property -dict {PACKAGE_PIN W16 IOSTANDARD LVCMOS18} [get_ports {leds[5]}];  #J16.3
-set_property -dict {PACKAGE_PIN Y14 IOSTANDARD LVCMOS18} [get_ports {leds[6]}];  #J16.4
-set_property -dict {PACKAGE_PIN Y15 IOSTANDARD LVCMOS18} [get_ports {leds[7]}];  #J16.6
+set_property -dict {PACKAGE_PIN AD15 IOSTANDARD LVCMOS18} [get_ports {leds[0]}]
+set_property -dict {PACKAGE_PIN AD16 IOSTANDARD LVCMOS18} [get_ports {leds[1]}]
+set_property -dict {PACKAGE_PIN AD17 IOSTANDARD LVCMOS18} [get_ports {leds[2]}]
+set_property -dict {PACKAGE_PIN V16 IOSTANDARD LVCMOS18} [get_ports {leds[3]}]
+set_property -dict {PACKAGE_PIN W15 IOSTANDARD LVCMOS18} [get_ports {leds[4]}]
+set_property -dict {PACKAGE_PIN W16 IOSTANDARD LVCMOS18} [get_ports {leds[5]}]
+set_property -dict {PACKAGE_PIN Y14 IOSTANDARD LVCMOS18} [get_ports {leds[6]}]
+set_property -dict {PACKAGE_PIN Y15 IOSTANDARD LVCMOS18} [get_ports {leds[7]}]
 
 #Buttons
 # set_property -dict {PACKAGE_PIN BB24 IOSTANDARD LVCMOS18} [get_ports "btnu"] ;# Bank  64 VCCO - VCC1V8_FPGA - IO_L5P_T0U_N8_AD14P_64
@@ -191,11 +192,11 @@ set_property -dict {PACKAGE_PIN Y15 IOSTANDARD LVCMOS18} [get_ports {leds[7]}]; 
 # set_property -dict {PACKAGE_PIN BE23 IOSTANDARD LVCMOS18} [get_ports "btnr"] ;# Bank  64 VCCO - VCC1V8_FPGA - IO_L3N_T0L_N5_AD15N_64
 # set_property -dict {PACKAGE_PIN BD23 IOSTANDARD LVCMOS18} [get_ports "btnc"] ;# Bank  64 VCCO - VCC1V8_FPGA - IO_L3P_T0L_N4_AD15P_64
 
-set_property -dict {PACKAGE_PIN AA14 IOSTANDARD LVCMOS18} [get_ports "btnu"] ;# Bank  98 J16.7
-set_property -dict {PACKAGE_PIN V14 IOSTANDARD LVCMOS18} [get_ports "btnl"] ;# Bank  98 S2.4
-set_property -dict {PACKAGE_PIN AC14  IOSTANDARD LVCMOS18} [get_ports "btnd"] ;#SW3
-set_property -dict {PACKAGE_PIN AA15 IOSTANDARD LVCMOS18} [get_ports "btnr"] ;# Bank  98 J16.8
-set_property -dict {PACKAGE_PIN V13 IOSTANDARD LVCMOS18} [get_ports "btnc"] ;# Bank  98 S2.3
+set_property -dict {PACKAGE_PIN AA14 IOSTANDARD LVCMOS18} [get_ports btnu]
+set_property -dict {PACKAGE_PIN V14 IOSTANDARD LVCMOS18} [get_ports btnl]
+set_property -dict {PACKAGE_PIN AC14 IOSTANDARD LVCMOS18} [get_ports btnd]
+set_property -dict {PACKAGE_PIN AA15 IOSTANDARD LVCMOS18} [get_ports btnr]
+set_property -dict {PACKAGE_PIN V13 IOSTANDARD LVCMOS18} [get_ports btnc]
 
 ## Ethernet
 
@@ -291,17 +292,17 @@ set_property PACKAGE_PIN W55 [get_ports {ddr_bg[1]}]
 
 set_property PACKAGE_PIN AC46 [get_ports {ddr_addr[0]}]
 set_property PACKAGE_PIN Y47 [get_ports {ddr_addr[1]}]
-set_property PACKAGE_PIN Y45  [get_ports {ddr_addr[2]}]
+set_property PACKAGE_PIN Y45 [get_ports {ddr_addr[2]}]
 set_property PACKAGE_PIN AA46 [get_ports {ddr_addr[3]}]
 set_property PACKAGE_PIN W53 [get_ports {ddr_addr[4]}]
 set_property PACKAGE_PIN W52 [get_ports {ddr_addr[5]}]
 set_property PACKAGE_PIN Y49 [get_ports {ddr_addr[6]}]
 set_property PACKAGE_PIN AA49 [get_ports {ddr_addr[7]}]
-set_property PACKAGE_PIN Y50  [get_ports {ddr_addr[8]}]
+set_property PACKAGE_PIN Y50 [get_ports {ddr_addr[8]}]
 set_property PACKAGE_PIN AA47 [get_ports {ddr_addr[9]}]
 set_property PACKAGE_PIN AC48 [get_ports {ddr_addr[10]}]
 set_property PACKAGE_PIN AA45 [get_ports {ddr_addr[11]}]
-set_property PACKAGE_PIN V51  [get_ports {ddr_addr[12]}]
+set_property PACKAGE_PIN V51 [get_ports {ddr_addr[12]}]
 set_property PACKAGE_PIN AC51 [get_ports {ddr_addr[13]}]
 set_property PACKAGE_PIN AB46 [get_ports {ddr_addr[14]}]
 set_property PACKAGE_PIN AC49 [get_ports {ddr_addr[15]}]
@@ -360,51 +361,51 @@ set_property PACKAGE_PIN AG63 [get_ports {ddr_dqs_n[0]}]
 #set_property PACKAGE_PIN C24      [get_ports "ddr_dq[66]"] ;# Bank  72 VCCO - VCC1V2_FPGA - IO_L21P_T3L_N4_AD8P_72
 #set_property PACKAGE_PIN A23      [get_ports "ddr_dq[65]"] ;# Bank  72 VCCO - VCC1V2_FPGA - IO_L20N_T3L_N3_AD1N_72
 #set_property PACKAGE_PIN A24      [get_ports "ddr_dq[64]"] ;# Bank  72 VCCO - VCC1V2_FPGA - IO_L20P_T3L_N2_AD1P_72
-set_property PACKAGE_PIN T52  [get_ports {ddr_dq[63]}]
-set_property PACKAGE_PIN N51  [get_ports {ddr_dq[62]}]
-set_property PACKAGE_PIN P53  [get_ports {ddr_dq[61]}]
-set_property PACKAGE_PIN P51  [get_ports {ddr_dq[60]}]
-set_property PACKAGE_PIN U52  [get_ports {ddr_dq[59]}]
-set_property PACKAGE_PIN U53  [get_ports {ddr_dq[58]}]
-set_property PACKAGE_PIN T51  [get_ports {ddr_dq[57]}]
-set_property PACKAGE_PIN P52  [get_ports {ddr_dq[56]}]
-set_property PACKAGE_PIN L51  [get_ports {ddr_dq[55]}]
-set_property PACKAGE_PIN L52  [get_ports {ddr_dq[54]}]
-set_property PACKAGE_PIN L54  [get_ports {ddr_dq[53]}]
-set_property PACKAGE_PIN M52  [get_ports {ddr_dq[52]}]
-set_property PACKAGE_PIN M51  [get_ports {ddr_dq[51]}]
-set_property PACKAGE_PIN J51  [get_ports {ddr_dq[50]}]
-set_property PACKAGE_PIN J52  [get_ports {ddr_dq[49]}]
-set_property PACKAGE_PIN K54  [get_ports {ddr_dq[48]}]
-set_property PACKAGE_PIN K58  [get_ports {ddr_dq[47]}]
-set_property PACKAGE_PIN N55  [get_ports {ddr_dq[46]}]
-set_property PACKAGE_PIN M58  [get_ports {ddr_dq[45]}]
-set_property PACKAGE_PIN M57  [get_ports {ddr_dq[44]}]
-set_property PACKAGE_PIN L57  [get_ports {ddr_dq[43]}]
-set_property PACKAGE_PIN K57  [get_ports {ddr_dq[42]}]
-set_property PACKAGE_PIN N58  [get_ports {ddr_dq[41]}]
-set_property PACKAGE_PIN N56  [get_ports {ddr_dq[40]}]
-set_property PACKAGE_PIN U62  [get_ports {ddr_dq[39]}]
-set_property PACKAGE_PIN U61  [get_ports {ddr_dq[38]}]
-set_property PACKAGE_PIN V58  [get_ports {ddr_dq[37]}]
-set_property PACKAGE_PIN V63  [get_ports {ddr_dq[36]}]
-set_property PACKAGE_PIN V59  [get_ports {ddr_dq[35]}]
-set_property PACKAGE_PIN W63  [get_ports {ddr_dq[34]}]
-set_property PACKAGE_PIN W62  [get_ports {ddr_dq[33]}]
-set_property PACKAGE_PIN U63  [get_ports {ddr_dq[32]}]
-set_property PACKAGE_PIN R57  [get_ports {ddr_dq[31]}]
-set_property PACKAGE_PIN R54  [get_ports {ddr_dq[30]}]
-set_property PACKAGE_PIN P56  [get_ports {ddr_dq[29]}]
-set_property PACKAGE_PIN T56  [get_ports {ddr_dq[28]}]
-set_property PACKAGE_PIN R58  [get_ports {ddr_dq[27]}]
-set_property PACKAGE_PIN P55  [get_ports {ddr_dq[26]}]
-set_property PACKAGE_PIN R55  [get_ports {ddr_dq[25]}]
-set_property PACKAGE_PIN T57  [get_ports {ddr_dq[24]}]
-set_property PACKAGE_PIN Y63  [get_ports {ddr_dq[23]}]
+set_property PACKAGE_PIN T52 [get_ports {ddr_dq[63]}]
+set_property PACKAGE_PIN N51 [get_ports {ddr_dq[62]}]
+set_property PACKAGE_PIN P53 [get_ports {ddr_dq[61]}]
+set_property PACKAGE_PIN P51 [get_ports {ddr_dq[60]}]
+set_property PACKAGE_PIN U52 [get_ports {ddr_dq[59]}]
+set_property PACKAGE_PIN U53 [get_ports {ddr_dq[58]}]
+set_property PACKAGE_PIN T51 [get_ports {ddr_dq[57]}]
+set_property PACKAGE_PIN P52 [get_ports {ddr_dq[56]}]
+set_property PACKAGE_PIN L51 [get_ports {ddr_dq[55]}]
+set_property PACKAGE_PIN L52 [get_ports {ddr_dq[54]}]
+set_property PACKAGE_PIN L54 [get_ports {ddr_dq[53]}]
+set_property PACKAGE_PIN M52 [get_ports {ddr_dq[52]}]
+set_property PACKAGE_PIN M51 [get_ports {ddr_dq[51]}]
+set_property PACKAGE_PIN J51 [get_ports {ddr_dq[50]}]
+set_property PACKAGE_PIN J52 [get_ports {ddr_dq[49]}]
+set_property PACKAGE_PIN K54 [get_ports {ddr_dq[48]}]
+set_property PACKAGE_PIN K58 [get_ports {ddr_dq[47]}]
+set_property PACKAGE_PIN N55 [get_ports {ddr_dq[46]}]
+set_property PACKAGE_PIN M58 [get_ports {ddr_dq[45]}]
+set_property PACKAGE_PIN M57 [get_ports {ddr_dq[44]}]
+set_property PACKAGE_PIN L57 [get_ports {ddr_dq[43]}]
+set_property PACKAGE_PIN K57 [get_ports {ddr_dq[42]}]
+set_property PACKAGE_PIN N58 [get_ports {ddr_dq[41]}]
+set_property PACKAGE_PIN N56 [get_ports {ddr_dq[40]}]
+set_property PACKAGE_PIN U62 [get_ports {ddr_dq[39]}]
+set_property PACKAGE_PIN U61 [get_ports {ddr_dq[38]}]
+set_property PACKAGE_PIN V58 [get_ports {ddr_dq[37]}]
+set_property PACKAGE_PIN V63 [get_ports {ddr_dq[36]}]
+set_property PACKAGE_PIN V59 [get_ports {ddr_dq[35]}]
+set_property PACKAGE_PIN W63 [get_ports {ddr_dq[34]}]
+set_property PACKAGE_PIN W62 [get_ports {ddr_dq[33]}]
+set_property PACKAGE_PIN U63 [get_ports {ddr_dq[32]}]
+set_property PACKAGE_PIN R57 [get_ports {ddr_dq[31]}]
+set_property PACKAGE_PIN R54 [get_ports {ddr_dq[30]}]
+set_property PACKAGE_PIN P56 [get_ports {ddr_dq[29]}]
+set_property PACKAGE_PIN T56 [get_ports {ddr_dq[28]}]
+set_property PACKAGE_PIN R58 [get_ports {ddr_dq[27]}]
+set_property PACKAGE_PIN P55 [get_ports {ddr_dq[26]}]
+set_property PACKAGE_PIN R55 [get_ports {ddr_dq[25]}]
+set_property PACKAGE_PIN T57 [get_ports {ddr_dq[24]}]
+set_property PACKAGE_PIN Y63 [get_ports {ddr_dq[23]}]
 set_property PACKAGE_PIN AA61 [get_ports {ddr_dq[22]}]
 set_property PACKAGE_PIN AB58 [get_ports {ddr_dq[21]}]
 set_property PACKAGE_PIN AA60 [get_ports {ddr_dq[20]}]
-set_property PACKAGE_PIN Y62  [get_ports {ddr_dq[19]}]
+set_property PACKAGE_PIN Y62 [get_ports {ddr_dq[19]}]
 set_property PACKAGE_PIN AA62 [get_ports {ddr_dq[18]}]
 set_property PACKAGE_PIN AA59 [get_ports {ddr_dq[17]}]
 set_property PACKAGE_PIN AB59 [get_ports {ddr_dq[16]}]
@@ -483,7 +484,7 @@ set_output_delay -clock [get_clocks sd_clk_out_1] -min -add_delay 0.000 [get_por
 # setup slow (spec requires minimum 5ns)
 set_output_delay -clock [get_clocks sd_clk_out_1] -max -add_delay 8.000 [get_ports {sd_dat[*]}]
 set_output_delay -clock [get_clocks sd_clk_out_1] -max -add_delay 8.000 [get_ports sd_cmd]
-
+ip 4
 #################
 # card out / FPGA in
 # assume ~15cm/ns propagation time
@@ -514,58 +515,7 @@ set_clock_groups -logically_exclusive -group [get_clocks -include_generated_cloc
 set_clock_groups -asynchronous -group [get_clocks -include_generated_clocks chipset_clk_clk_mmcm] -group [get_clocks -filter { NAME =~  "*sd*" }]
 
 
-create_debug_core u_ila_0 ila
-set_property ALL_PROBE_SAME_MU true [get_debug_cores u_ila_0]
-set_property ALL_PROBE_SAME_MU_CNT 4 [get_debug_cores u_ila_0]
-set_property C_ADV_TRIGGER true [get_debug_cores u_ila_0]
-set_property C_DATA_DEPTH 4096 [get_debug_cores u_ila_0]
-set_property C_EN_STRG_QUAL true [get_debug_cores u_ila_0]
-set_property C_INPUT_PIPE_STAGES 0 [get_debug_cores u_ila_0]
-set_property C_TRIGIN_EN false [get_debug_cores u_ila_0]
-set_property C_TRIGOUT_EN false [get_debug_cores u_ila_0]
-set_property port_width 1 [get_debug_ports u_ila_0/clk]
-connect_debug_port u_ila_0/clk [get_nets [list chipset/clk_mmcm/inst/chipset_clk]]
-set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe0]
-set_property port_width 9 [get_debug_ports u_ila_0/probe0]
-connect_debug_port u_ila_0/probe0 [get_nets [list {chipset/chipset_impl/piton_sd_top/bram_addr[0]} {chipset/chipset_impl/piton_sd_top/bram_addr[1]} {chipset/chipset_impl/piton_sd_top/bram_addr[2]} {chipset/chipset_impl/piton_sd_top/bram_addr[3]} {chipset/chipset_impl/piton_sd_top/bram_addr[4]} {chipset/chipset_impl/piton_sd_top/bram_addr[5]} {chipset/chipset_impl/piton_sd_top/bram_addr[6]} {chipset/chipset_impl/piton_sd_top/bram_addr[7]} {chipset/chipset_impl/piton_sd_top/bram_addr[8]}]]
-create_debug_port u_ila_0 probe
-set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe1]
-set_property port_width 1 [get_debug_ports u_ila_0/probe1]
-connect_debug_port u_ila_0/probe1 [get_nets [list chipset/chipset_impl/piton_sd_top/init_done]]
-create_debug_port u_ila_0 probe
-set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe2]
-set_property port_width 1 [get_debug_ports u_ila_0/probe2]
-connect_debug_port u_ila_0/probe2 [get_nets [list chipset/chipset_impl/piton_sd_top/sd_int_cmd]]
-create_debug_port u_ila_0 probe
-set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe3]
-set_property port_width 1 [get_debug_ports u_ila_0/probe3]
-connect_debug_port u_ila_0/probe3 [get_nets [list chipset/chipset_impl/piton_sd_top/sd_int_data]]
-create_debug_core u_ila_1 ila
-set_property ALL_PROBE_SAME_MU true [get_debug_cores u_ila_1]
-set_property ALL_PROBE_SAME_MU_CNT 4 [get_debug_cores u_ila_1]
-set_property C_ADV_TRIGGER true [get_debug_cores u_ila_1]
-set_property C_DATA_DEPTH 4096 [get_debug_cores u_ila_1]
-set_property C_EN_STRG_QUAL true [get_debug_cores u_ila_1]
-set_property C_INPUT_PIPE_STAGES 0 [get_debug_cores u_ila_1]
-set_property C_TRIGIN_EN false [get_debug_cores u_ila_1]
-set_property C_TRIGOUT_EN false [get_debug_cores u_ila_1]
-set_property port_width 1 [get_debug_ports u_ila_1/clk]
-connect_debug_port u_ila_1/clk [get_nets [list chipset/chipset_impl/piton_sd_top/sdc_controller/clock_divider0/slow_clk_reg_0]]
-set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_1/probe0]
-set_property port_width 5 [get_debug_ports u_ila_1/probe0]
-connect_debug_port u_ila_1/probe0 [get_nets [list {chipset/chipset_impl/piton_sd_top/sdc_controller/int_status_o[0]} {chipset/chipset_impl/piton_sd_top/sdc_controller/int_status_o[1]} {chipset/chipset_impl/piton_sd_top/sdc_controller/int_status_o[2]} {chipset/chipset_impl/piton_sd_top/sdc_controller/int_status_o[3]} {chipset/chipset_impl/piton_sd_top/sdc_controller/int_status_o[4]}]]
-create_debug_port u_ila_1 probe
-set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_1/probe1]
-set_property port_width 4 [get_debug_ports u_ila_1/probe1]
-connect_debug_port u_ila_1/probe1 [get_nets [list {chipset/chipset_impl/piton_sd_top/sd_dat_dat_i[0]} {chipset/chipset_impl/piton_sd_top/sd_dat_dat_i[1]} {chipset/chipset_impl/piton_sd_top/sd_dat_dat_i[2]} {chipset/chipset_impl/piton_sd_top/sd_dat_dat_i[3]}]]
-create_debug_port u_ila_1 probe
-set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_1/probe2]
-set_property port_width 4 [get_debug_ports u_ila_1/probe2]
-connect_debug_port u_ila_1/probe2 [get_nets [list {chipset/chipset_impl/piton_sd_top/sd_dat_out_o[0]} {chipset/chipset_impl/piton_sd_top/sd_dat_out_o[1]} {chipset/chipset_impl/piton_sd_top/sd_dat_out_o[2]} {chipset/chipset_impl/piton_sd_top/sd_dat_out_o[3]}]]
-create_debug_port u_ila_1 probe
-set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_1/probe3]
-set_property port_width 1 [get_debug_ports u_ila_1/probe3]
-connect_debug_port u_ila_1/probe3 [get_nets [list chipset/chipset_impl/piton_sd_top/sd_dat_oe_o]]
+
 set_property C_CLK_INPUT_FREQ_HZ 300000000 [get_debug_cores dbg_hub]
 set_property C_ENABLE_CLK_DIVIDER false [get_debug_cores dbg_hub]
 set_property C_USER_SCAN_CHAIN 1 [get_debug_cores dbg_hub]

@@ -1,8 +1,1 @@
-hello_world.c
-hello_world_many.c
 accu_test.c
-lrsc_test.c
-lrsc_single.c
-clint_plic_access.c
-amo_align.c
-add_shared_var.c

@@ -64,6 +64,10 @@ puts "INFO: Implementation launched for project '${PROJECT_NAME}'"
 # Wait for run to finish
 wait_on_run impl_1
 
+open_run synth_1 -name synth_1
+wait_on_run synth_1
+write_edif netlist.edn 
+
 if {[get_property PROGRESS [get_runs impl_1]] != "100%"} {
     puts "ERROR: Implementation failed."
 } else {
