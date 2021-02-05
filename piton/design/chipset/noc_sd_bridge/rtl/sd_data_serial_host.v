@@ -61,6 +61,10 @@ module sd_data_serial_host(
            //tristate data
            output reg DAT_oe_o,
            output reg[3:0] DAT_dat_o,
+           `elsif VU19P_LS_BOARD
+           //tristate data
+           output reg DAT_oe_o,
+           output reg[3:0] DAT_dat_o,
            `else
            (* iob="true" *) output reg DAT_oe_o,
            (* iob="true" *) output reg[3:0] DAT_dat_o,
@@ -77,6 +81,8 @@ module sd_data_serial_host(
            output reg crc_ok
        );
 `ifdef DUALVU440_BOARD
+reg [3:0] DAT_dat_reg;
+`elsif VU19P_LS_BOARD
 reg [3:0] DAT_dat_reg;
 `else
 (* iob="true" *) reg [3:0] DAT_dat_reg;

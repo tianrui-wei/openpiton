@@ -66,7 +66,7 @@ wait_on_run impl_1
 
 open_run synth_1 -name synth_1
 wait_on_run synth_1
-write_edif netlist.edn 
+write_edif netlist.edn -force
 
 if {[get_property PROGRESS [get_runs impl_1]] != "100%"} {
     puts "ERROR: Implementation failed."

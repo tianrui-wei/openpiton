@@ -176,14 +176,24 @@ set_property PACKAGE_PIN AC13 [get_ports sys_rst_n]
 # set_property -dict {PACKAGE_PIN AV36 IOSTANDARD LVCMOS12} [get_ports "leds[6]"] ;# Bank  42 VCCO - VCC1V2_FPGA - IO_L19N_T3L_N1_DBC_AD9N_42
 # set_property -dict {PACKAGE_PIN BA37 IOSTANDARD LVCMOS12} [get_ports "leds[7]"] ;# Bank  42 VCCO - VCC1V2_FPGA - IO_L13N_T2L_N1_GC_QBC_42
 
-set_property -dict {PACKAGE_PIN AD15 IOSTANDARD LVCMOS18} [get_ports {leds[0]}]
-set_property -dict {PACKAGE_PIN AD16 IOSTANDARD LVCMOS18} [get_ports {leds[1]}]
-set_property -dict {PACKAGE_PIN AD17 IOSTANDARD LVCMOS18} [get_ports {leds[2]}]
-set_property -dict {PACKAGE_PIN V16 IOSTANDARD LVCMOS18} [get_ports {leds[3]}]
-set_property -dict {PACKAGE_PIN W15 IOSTANDARD LVCMOS18} [get_ports {leds[4]}]
-set_property -dict {PACKAGE_PIN W16 IOSTANDARD LVCMOS18} [get_ports {leds[5]}]
-set_property -dict {PACKAGE_PIN Y14 IOSTANDARD LVCMOS18} [get_ports {leds[6]}]
-set_property -dict {PACKAGE_PIN Y15 IOSTANDARD LVCMOS18} [get_ports {leds[7]}]
+#set_property -dict {PACKAGE_PIN AD15 IOSTANDARD LVCMOS18} [get_ports {leds[0]}]
+#set_property -dict {PACKAGE_PIN AD16 IOSTANDARD LVCMOS18} [get_ports {leds[1]}]
+#set_property -dict {PACKAGE_PIN AD17 IOSTANDARD LVCMOS18} [get_ports {leds[2]}]
+#set_property -dict {PACKAGE_PIN V16 IOSTANDARD LVCMOS18} [get_ports {leds[3]}]
+#set_property -dict {PACKAGE_PIN W15 IOSTANDARD LVCMOS18} [get_ports {leds[4]}]
+#set_property -dict {PACKAGE_PIN W16 IOSTANDARD LVCMOS18} [get_ports {leds[5]}]
+#set_property -dict {PACKAGE_PIN Y14 IOSTANDARD LVCMOS18} [get_ports {leds[6]}]
+#set_property -dict {PACKAGE_PIN Y15 IOSTANDARD LVCMOS18} [get_ports {leds[7]}]
+# for GPIO board on J7
+set_property -dict {PACKAGE_PIN BE32 IOSTANDARD LVCMOS18} [get_ports {leds[0]}]
+set_property -dict {PACKAGE_PIN BE33 IOSTANDARD LVCMOS18} [get_ports {leds[1]}]
+set_property -dict {PACKAGE_PIN BY33 IOSTANDARD LVCMOS18} [get_ports {leds[2]}]
+set_property -dict {PACKAGE_PIN BY34 IOSTANDARD LVCMOS18} [get_ports {leds[3]}]
+set_property -dict {PACKAGE_PIN BW30 IOSTANDARD LVCMOS18} [get_ports {leds[4]}]
+set_property -dict {PACKAGE_PIN BW31 IOSTANDARD LVCMOS18} [get_ports {leds[5]}]
+set_property -dict {PACKAGE_PIN BW32 IOSTANDARD LVCMOS18} [get_ports {leds[6]}]
+set_property -dict {PACKAGE_PIN BW33 IOSTANDARD LVCMOS18} [get_ports {leds[7]}]
+
 
 #Buttons
 # set_property -dict {PACKAGE_PIN BB24 IOSTANDARD LVCMOS18} [get_ports "btnu"] ;# Bank  64 VCCO - VCC1V8_FPGA - IO_L5P_T0U_N8_AD14P_64
@@ -192,11 +202,18 @@ set_property -dict {PACKAGE_PIN Y15 IOSTANDARD LVCMOS18} [get_ports {leds[7]}]
 # set_property -dict {PACKAGE_PIN BE23 IOSTANDARD LVCMOS18} [get_ports "btnr"] ;# Bank  64 VCCO - VCC1V8_FPGA - IO_L3N_T0L_N5_AD15N_64
 # set_property -dict {PACKAGE_PIN BD23 IOSTANDARD LVCMOS18} [get_ports "btnc"] ;# Bank  64 VCCO - VCC1V8_FPGA - IO_L3P_T0L_N4_AD15P_64
 
-set_property -dict {PACKAGE_PIN AA14 IOSTANDARD LVCMOS18} [get_ports btnu]
-set_property -dict {PACKAGE_PIN V14 IOSTANDARD LVCMOS18} [get_ports btnl]
-set_property -dict {PACKAGE_PIN AC14 IOSTANDARD LVCMOS18} [get_ports btnd]
-set_property -dict {PACKAGE_PIN AA15 IOSTANDARD LVCMOS18} [get_ports btnr]
-set_property -dict {PACKAGE_PIN V13 IOSTANDARD LVCMOS18} [get_ports btnc]
+#set_property -dict {PACKAGE_PIN AA14 IOSTANDARD LVCMOS18} [get_ports btnu]
+#set_property -dict {PACKAGE_PIN V14 IOSTANDARD LVCMOS18} [get_ports btnl]
+#set_property -dict {PACKAGE_PIN AC14 IOSTANDARD LVCMOS18} [get_ports btnd]
+#set_property -dict {PACKAGE_PIN AA15 IOSTANDARD LVCMOS18} [get_ports btnr]
+#set_property -dict {PACKAGE_PIN V13 IOSTANDARD LVCMOS18} [get_ports btnc]
+# for gpio board on j7
+set_property -dict {PACKAGE_PIN BE40 IOSTANDARD LVCMOS18} [get_ports btnu]
+set_property -dict {PACKAGE_PIN BE39 IOSTANDARD LVCMOS18} [get_ports btnl]
+set_property -dict {PACKAGE_PIN BF40 IOSTANDARD LVCMOS18} [get_ports btnd]
+set_property -dict {PACKAGE_PIN BF39 IOSTANDARD LVCMOS18} [get_ports btnr]
+set_property -dict {PACKAGE_PIN AC14 IOSTANDARD LVCMOS18} [get_ports btnc]
+
 
 ## Ethernet
 
