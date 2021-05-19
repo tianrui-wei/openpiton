@@ -143,10 +143,14 @@ if  {[info exists ::env(PITON_ARIANE)]} {
   exec make distclean 2> /dev/null
   exec make ARCH=riscv CROSS_COMPILE=~/piton/xpack-riscv-none-embed-gcc-10.1.0-1.1/bin/riscv-none-embed- openpiton_riscv64_defconfig
   #TODO: update riscv toochain
-  exec make CROSS_COMPILE=$::env(RISCV_TOOLCHAIN)/bin/riscv-none-embed- -j8 2> /dev/null
+  puts "INFO: defconfig generation complete"
+  exec make ARCH=riscv CROSS_COMPILE=$::env(RISCV_TOOLCHAIN)/bin/riscv-none-embed- -j8 2> /dev/null
+  puts "INFO: uboot generation complete"
   # generate mover using the spl image
-  cd $::env(PITON_ROOT)/piton/design/common/mover/
-  exec make clean
+  cd $::env(PITON_ROOT)/piton/design/common/mover
+  set CURRENTDIR [pwd]
+  puts "INFO: changing to the correct directory $CURRENTDIR"
+  exec make clean 2> /dev/null
   exec make 2> /dev/null
   # generate the linux bootrom using mover image
   exec cp mover.sv $::env(ARIANE_ROOT)/openpiton/bootrom/linux/bootrom_linux.sv
