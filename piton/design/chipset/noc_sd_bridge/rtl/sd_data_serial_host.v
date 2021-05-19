@@ -57,9 +57,14 @@ module sd_data_serial_host(
            //Rx Fifo
            output reg [31:0] data_out,
            output reg we,
+           `ifdef DUALVU440_BOARD
            //tristate data
+           output reg DAT_oe_o,
+           output reg[3:0] DAT_dat_o,
+           `else
            (* iob="true" *) output reg DAT_oe_o,
            (* iob="true" *) output reg[3:0] DAT_dat_o,
+           `endif
            input [3:0] DAT_dat_i,
            //Controll signals
            input [`BLKSIZE_W-1:0] blksize,
@@ -71,8 +76,11 @@ module sd_data_serial_host(
            output busy,
            output reg crc_ok
        );
-
+`ifdef DUALVU440_BOARD
+reg [3:0] DAT_dat_reg;
+`else
 (* iob="true" *) reg [3:0] DAT_dat_reg;
+`endif
 reg [3:0] DAT_dat_o_reg;
 reg DAT_oe_o_reg;
 reg [`BLKSIZE_W-1+3:0] data_cycles;

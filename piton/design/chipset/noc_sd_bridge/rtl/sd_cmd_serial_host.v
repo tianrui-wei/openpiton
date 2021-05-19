@@ -74,8 +74,17 @@ output reg [119:0] response_o;
 output reg finish_o;
 output reg crc_ok_o;
 output reg index_ok_o;
+
+
+`ifdef DUALVU440_BOARD
+output reg cmd_oe_o;
+output reg cmd_out_o;
+
+`else
 (* iob="true" *) output reg cmd_oe_o;
 (* iob="true" *) output reg cmd_out_o;
+
+`endif
 
 //-------------Internal Constant-------------
 parameter INIT_DELAY = 4;
@@ -84,7 +93,12 @@ parameter CMD_SIZE = 40;
 parameter RESP_SIZE = 128;
 
 //---------------Internal variable-----------
+
+`ifdef DUALVU440_BOARD
+reg cmd_dat_reg;
+`else
 (* iob="true" *) reg cmd_dat_reg;
+`endif
 reg cmd_out_o_reg;
 reg cmd_oe_o_reg;
 integer resp_len;

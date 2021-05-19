@@ -144,3 +144,4 @@ export M4PATH=$DV_ROOT/tools/$OS/$CPU/lib/m4
 
 # Set library path for the new goldfinger
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$DV_ROOT/tools/src/goldfinger/lib
+function vcs() { command vcs -full64 "$@"; }; export -f vcs

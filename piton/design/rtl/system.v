@@ -178,6 +178,8 @@ module system(
 `ifdef PITON_ARIANE
 `ifndef VC707_BOARD
 `ifndef VCU118_BOARD
+`ifndef DUALVU440_BOARD
+`ifndef VU19P_LS_BOARD
 `ifndef NEXYSVIDEO_BOARD
 `ifndef XUPP3R_BOARD
 `ifndef F1_BOARD
@@ -189,6 +191,8 @@ module system(
 `endif//F1_BOARD
 `endif//XUPP3R_BOARD
 `endif //NEXYSVIDEO_BOARD
+`endif //VCU118_BOARD
+`endif //VCU118_BOARD
 `endif //VCU118_BOARD
 `endif  //VC707_BOARD
 `endif //PITON_ARIANE
@@ -309,14 +313,29 @@ module system(
 		input                                       uart_cts,
 		output                                      uart_rts,
 `endif // VCU118_BOARD
+
+`ifdef DUALVU440_BOARD
+        input                                       uart_cts,
+        output                                      uart_rts,
+`endif // DUALVU440_BOARD
+
+`ifdef VU19P_LS_BOARD
+        input                                       uart_cts,
+        output                                      uart_rts,
+`endif // VU19P_LS_BOARD
+
 `endif // endif PITONSYS_UART
 
 `ifdef PITONSYS_SPI
     `ifndef VC707_BOARD
     input                                       sd_cd,
-    `ifndef VCU118_BOARD
+        `ifndef VCU118_BOARD
+        `ifndef DUALVU440_BOARD
+        `ifndef VU19_LS_BOARD
     output                                      sd_reset,
-    `endif
+        `endif
+        `endif    
+        `endif
     `endif
     output                                      sd_clk_out,
     inout                                       sd_cmd,
@@ -379,10 +398,26 @@ module system(
     input                                       btnu,
     input                                       btnd,
     input                                       btnc,
+`elsif DUAL440_BOARD
+    input                                       btnl,
+    input                                       btnr,
+    input                                       btnu,
+    input                                       btnd,
+    input                                       btnc,
+`elsif VU19P_LS_BOARD
+    input                                       btnl,
+    input                                       btnr,
+    input                                       btnu,
+    input                                       btnd,
+    input                                       btnc,
 `endif
 
 `ifdef VCU118_BOARD
     // we only have 4 gpio dip switches on this board
+    input  [3:0]                                sw,    
+`elsif DUALVU440_BOARD
+    input  [3:0]                                sw,
+`elsif VU19P_LS_BOARD
     input  [3:0]                                sw,
 `elsif XUPP3R_BOARD
     // no switches :(
@@ -552,6 +587,17 @@ assign rtc = rtc_div[6];
 // tie off
 assign uart_rts = 1'b0;
 `endif // VCU118_BOARD
+
+`ifdef DUALVU440_BOARD
+// tie off
+assign uart_rts = 1'b0;
+`endif // VCU118_BOARD
+
+`ifdef VU19P_LS_BOARD
+// tie off
+assign uart_rts = 1'b0;
+`endif // VCU118_BOARD
+
 
 // Different reset active levels for different boards
 always @ *
@@ -1135,9 +1181,14 @@ chipset chipset(
 `ifdef PITONSYS_SPI
     `ifndef VC707_BOARD
     .sd_cd(sd_cd),
-    `ifndef VCU118_BOARD
+    `ifndef VCU118_BOARD    
+    `ifndef DUALVU440_BOARD
+    `ifndef VU19P_LS_BOARD
     .sd_reset(sd_reset),
     `endif
+    `endif
+    `endif
+
     `endif
     .sd_clk_out(sd_clk_out),
     .sd_cmd(sd_cmd),
@@ -1182,6 +1233,18 @@ chipset chipset(
     .oled_vbat_n(oled_vbat_n),
     .oled_rst_n(oled_rst_n),
 `elsif VCU118_BOARD
+    .btnl(btnl),
+    .btnr(btnr),
+    .btnu(btnu),
+    .btnd(btnd),
+    .btnc(btnc),
+`elsif DUALVU440_BOARD
+    .btnl(btnl),
+    .btnr(btnr),
+    .btnu(btnu),
+    .btnd(btnd),
+    .btnc(btnc),
+`elsif VU19P_LS_BOARD
     .btnl(btnl),
     .btnr(btnr),
     .btnu(btnu),

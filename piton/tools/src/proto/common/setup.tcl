@@ -110,20 +110,19 @@ for {set k 0} {$k < $::env(PITON_NUM_TILES)} {incr k} {
   }
 }
 
-puts "INFO: Using Defines: ${ALL_DEFAULT_VERILOG_MACROS}"
-
-# credit goes to https://github.com/PrincetonUniversity/openpiton/issues/50 
-# and https://www.xilinx.com/support/answers/72570.html
 set tmp_PYTHONPATH $env(PYTHONPATH)
 set tmp_PYTHONHOME $env(PYTHONHOME)
-unset env(PYTHONPATH)
-unset env(PYTHONHOME)
 
+puts "INFO: Using Defines: ${ALL_DEFAULT_VERILOG_MACROS}"
+  unset ::env(PYTHONPATH)    
+  unset ::env(PYTHONHOME)
 # Pre-process PyHP files
 source $DV_ROOT/tools/src/proto/common/pyhp_preprocess.tcl
 set ALL_RTL_IMPL_FILES [pyhp_preprocess ${ALL_RTL_IMPL_FILES}]
 set ALL_INCLUDE_FILES [pyhp_preprocess ${ALL_INCLUDE_FILES}]
 
+ set ::env(PYTHONPATH) $tmp_PYTHONPATH
+ set ::env(PYTHONHOME) $tmp_PYTHONHOME
 
 if  {[info exists ::env(PITON_ARIANE)]} {
   puts "INFO: compiling DTS and bootroms for Ariane (MAX_HARTS=$::env(PITON_NUM_TILES), UART_FREQ=$env(CONFIG_SYS_FREQ))..."
@@ -158,7 +157,9 @@ if  {[info exists ::env(PITON_ARIANE)]} {
   set NUM_TARGETS [expr 2*$::env(PITON_NUM_TILES)]
   set NUM_SOURCES 2
   puts "INFO: generating PLIC for Ariane ($NUM_TARGETS targets, $NUM_SOURCES sources)..."
-  cd $::env(ARIANE_ROOT)/src/rv_plic/rtl
+  unset ::env(PYTHONPATH)    
+  unset ::env(PYTHONHOME)
+  cd $::env(ARIANE_ROOT)/src/rv_plic/rtl  
   exec ./gen_plic_addrmap.py -t $NUM_TARGETS -s $NUM_SOURCES > plic_regmap.sv
 
   cd $TMP

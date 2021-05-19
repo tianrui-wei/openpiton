@@ -455,11 +455,29 @@ module chipset(
         input                                               btnr,
         input                                               btnu,
         input                                               btnd,
+        input                                               btnc,  
+    `elsif DUALVU440_BOARD
+        input                                               btnl,
+        input                                               btnr,
+        input                                               btnu,
+        input                                               btnd,
+        input                                               btnc,  
+    `elsif VU19P_LS_BOARD
+        input                                               btnl,
+        input                                               btnr,
+        input                                               btnu,
+        input                                               btnd,
         input                                               btnc,           
     `endif
 
     // Switches
     `ifdef VCU118_BOARD
+        // we only have 4 gpio dip switches on this board
+        input  [3:0]                                        sw,
+    `elsif DUALVU440_BOARD
+        // we only have 4 gpio dip switches on this board
+        input  [3:0]                                        sw,
+    `elsif VU19P_LS_BOARD
         // we only have 4 gpio dip switches on this board
         input  [3:0]                                        sw,
     `elsif XUPP3R_BOARD
@@ -748,6 +766,12 @@ end
             `ifdef VCU118_BOARD
                 assign uart_boot_en    = sw[0];
                 assign uart_timeout_en = sw[1];
+            `elsif DUALVU440_BOARD
+                assign uart_boot_en    = sw[0];
+                assign uart_timeout_en = sw[1];
+            `elsif VU19P_LS_BOARD
+                assign uart_boot_en    = sw[0];
+                assign uart_timeout_en = sw[1];
             `elsif XUPP3R_BOARD
                 assign uart_boot_en    = 1'b1;
                 assign uart_timeout_en = 1'b0;
@@ -763,6 +787,12 @@ end
     `ifdef VCU118_BOARD
         // only two switches available...
         assign noc_power_test_hop_count = {2'b0, sw[3:2]};
+    `elsif DUALVU440_BOARD
+        // only two switches available...
+        assign noc_power_test_hop_count = {4'b0};
+    `elsif VU19P_LS_BOARD
+        // only two switches available...
+        assign noc_power_test_hop_count = {4'b0};
     `elsif XUPP3R_BOARD
         // no switches :(
         assign noc_power_test_hop_count = 4'b0;
@@ -1567,6 +1597,22 @@ chipset_impl_noc_power_test  chipset_impl (
 
     `ifdef PITONSYS_SPI
     `ifdef VCU118_BOARD
+        ODDRE1 sd_clk_oddr (
+            .Q(sd_clk_out),
+            .C(sd_clk_out_internal),
+            .D1(1),
+            .D2(0),
+            .SR(0)
+            );
+    `elsif DUALVU440_BOARD
+        ODDRE1 sd_clk_oddr (
+            .Q(sd_clk_out),
+            .C(sd_clk_out_internal),
+            .D1(1),
+            .D2(0),
+            .SR(0)
+            );
+    `elsif VU19P_LS_BOARD
         ODDRE1 sd_clk_oddr (
             .Q(sd_clk_out),
             .C(sd_clk_out_internal),

@@ -48,7 +48,7 @@ module noc_axi4_bridge_ser(
 localparam ACCEPT = 2'd0;
 localparam SEND_HEADER = 2'd1;
 localparam SEND_DATA = 2'd2;
-
+reg [`NOC_DATA_WIDTH-1:0] resp_header;
 reg [`AXI4_DATA_WIDTH-1:0] data_in_f;
   reg [`NOC_DATA_WIDTH-1:0] resp_header;
 
@@ -118,6 +118,7 @@ always @(posedge clk) begin
     endcase // state
   end
 end
+
 
 always @(posedge clk) begin
   if (~rst_n) begin

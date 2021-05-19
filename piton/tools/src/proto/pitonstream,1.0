@@ -93,6 +93,7 @@ def usage():
     print("              Name of a supported core configuration:", file=sys.stderr)
     print("                  sparc     (opensparc T1 core, default)", file=sys.stderr)
     print("                  ariane    (64bit RISCV core)", file=sys.stderr)
+    print("                  blackparrot (64bit RISCV core)", file=sys.stderr)
     print("\n       -f, --file <filename>", file=sys.stderr)
     print("              File name with test names. If option --ustr is not specified,", file=sys.stderr)
     print("              they should be assembly test names, otherwise list of generated", file=sys.stderr)
@@ -304,7 +305,7 @@ def compileASMTest(tname, uart_div_latch, st_brd, flog, midas_args=None, coreTyp
 
     # Since we are using an existent synthesized mapping, we have to check
     # that all sections of new tests are mapped
-    rv = isTranslatorOK(addr_data_map, flog, coreType=="ariane")
+    rv = isTranslatorOK(addr_data_map, flog, coreType in ["ariane", "blackparrot"])
     if not rv:
         print_error("Can't use existent storage_addr_trans.tmp.v for %s" % tname)
         return 1
@@ -379,17 +380,17 @@ def main():
 
     # Wait until FPGA is configure
     if not options.no_wait_fpga_config:
-    	writeSTDOUT("Press reset button on FPGA\n")
-    	writeSTDOUT("Waiting...\n")
-    	while True:
-    	    try:
-    	        event = pollUART(ser)[0]
-    	        if event == CFG_DONE_EVENT:
-    	            writeSTDOUT("\nConfiguration is complete\n\n")
-    	            break
-    	    except KeyboardInterrupt:
-    	        processKeyboardInterrupt(ser, flog)
-    	        return
+        writeSTDOUT("Press reset button on FPGA\n")
+        writeSTDOUT("Waiting...\n")
+        while True:
+            try:
+                event = pollUART(ser)[0]
+                if event == CFG_DONE_EVENT:
+                    writeSTDOUT("\nConfiguration is complete\n\n")
+                    break
+            except KeyboardInterrupt:
+                processKeyboardInterrupt(ser, flog)
+                return
 
     # Main test loop
     fp = open("pitonstream_summary.csv", "w")
@@ -400,8 +401,10 @@ def main():
     for tname in tests:
         test_cnt += 1
         print_info("Running %s: %d out of %d test" % (tname, test_cnt, test_num))
-        if options.precompiled and options.core == "Ariane":
+        if options.precompiled and options.core == "ariane":
             print_info("Using precompiled RISCV test for Ariane.")
+        if options.precompiled and options.core == "blackparrot":
+            print_info("Using precompiled RISCV test for BlackParrot.")
         # Compile .s tests to get .ustr
         if options.ustr == False:
             rv = compileASMTest(tname, uart_div_latch, st_brd, flog, options.midas_args, options.core, options.precompiled, options.x_tiles, options.y_tiles)

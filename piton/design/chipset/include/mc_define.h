@@ -67,6 +67,44 @@
     `define DDR3_CKE_WIDTH          1
     `define DDR3_CS_WIDTH           1
     `define DDR3_ODT_WIDTH          1
+`elsif DUALVU440_BOARD
+    `define BOARD_MEM_SIZE_MB       8192
+    `define WORDS_PER_BURST         8
+    `define WORD_SIZE               8 // in bytes
+    `define MIG_APP_ADDR_WIDTH      30
+    `define MIG_APP_CMD_WIDTH       3
+    `define MIG_APP_DATA_WIDTH      512
+    `define MIG_APP_MASK_WIDTH      64
+
+    `define DDR3_DQ_WIDTH           64
+    `define DDR3_DQS_WIDTH          8
+    `define DDR3_ADDR_WIDTH         17
+    `define DDR3_BA_WIDTH           2
+    `define DDR3_DM_WIDTH           8
+    `define DDR3_CK_WIDTH           1
+    `define DDR3_CKE_WIDTH          1
+    `define DDR3_CS_WIDTH           1
+    `define DDR3_BG_WIDTH           2
+    `define DDR3_ODT_WIDTH          1
+`elsif VU19P_BOARD
+    `define BOARD_MEM_SIZE_MB       8192
+    `define WORDS_PER_BURST         8
+    `define WORD_SIZE               8 // in bytes
+    `define MIG_APP_ADDR_WIDTH      30
+    `define MIG_APP_CMD_WIDTH       3
+    `define MIG_APP_DATA_WIDTH      512
+    `define MIG_APP_MASK_WIDTH      64
+
+    `define DDR3_DQ_WIDTH           64
+    `define DDR3_DQS_WIDTH          8
+    `define DDR3_ADDR_WIDTH         17
+    `define DDR3_BA_WIDTH           2
+    `define DDR3_DM_WIDTH           8
+    `define DDR3_CK_WIDTH           1
+    `define DDR3_CKE_WIDTH          1
+    `define DDR3_CS_WIDTH           1
+    `define DDR3_BG_WIDTH           2
+    `define DDR3_ODT_WIDTH          1    
 `elsif VCU118_BOARD
     `define BOARD_MEM_SIZE_MB       2048
     `define WORDS_PER_BURST         8
