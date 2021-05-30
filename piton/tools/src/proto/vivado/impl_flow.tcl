@@ -46,7 +46,7 @@ set_property verilog_define ${ALL_VERILOG_MACROS} [get_fileset sources_1]
 set_property verilog_define ${ALL_VERILOG_MACROS} [get_fileset sim_1]
 
 # Some additional effort to meet timing
-set_property flow {Vivado Implementation 2016} [get_runs impl_1]
+set_property flow {Vivado Implementation 2019} [get_runs impl_1]
 set_property strategy Performance_ExtraTimingOpt [get_runs impl_1]
 
 # Dealing with Vivado case, when it locks IPs as old ones

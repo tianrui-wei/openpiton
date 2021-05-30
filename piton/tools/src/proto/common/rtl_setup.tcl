@@ -401,7 +401,9 @@ set CHIP_RTL_IMPL_FILES [list \
     "${DV_ROOT}/design/chip/tile/ariane/include/ariane_pkg.sv"                                \
     "${DV_ROOT}/design/chip/tile/ariane/include/ariane_axi_pkg.sv"                            \
     "${DV_ROOT}/design/chip/tile/ariane/include/wt_cache_pkg.sv"                              \
-    "${DV_ROOT}/design/chip/tile/ariane/include/axi_intf.sv"                                  \
+     "${DV_ROOT}/design/chip/tile/ariane/src/pmp/src/pmp.sv"                                   \
+    "${DV_ROOT}/design/chip/tile/ariane/src/pmp/src/pmp_entry.sv"                                   \
+   "${DV_ROOT}/design/chip/tile/ariane/include/axi_intf.sv"                                  \
     "${DV_ROOT}/design/chip/tile/ariane/src/fpu/src/fpnew_pkg.sv"                             \
     "${DV_ROOT}/design/chip/tile/ariane/src/util/sram.sv"                                     \
     "${DV_ROOT}/design/chip/tile/ariane/src/util/axi_master_connect.sv"                       \
