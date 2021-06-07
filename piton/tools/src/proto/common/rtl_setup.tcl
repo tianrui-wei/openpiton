@@ -470,7 +470,7 @@ set CHIP_RTL_IMPL_FILES [list \
     "${DV_ROOT}/design/chip/tile/ariane/src/cache_subsystem/wt_dcache_missunit.sv"            \
     "${DV_ROOT}/design/chip/tile/ariane/src/cache_subsystem/wt_dcache_wbuffer.sv"             \
     "${DV_ROOT}/design/chip/tile/ariane/src/cache_subsystem/wt_dcache.sv"                     \
-    "${DV_ROOT}/design/chip/tile/ariane/src/cache_subsystem/wt_icache.sv"                     \
+    "${DV_ROOT}/design/chip/tile/ariane/src/cache_subsystem/cva6_icache.sv"                   \
     "${DV_ROOT}/design/chip/tile/ariane/src/cache_subsystem/wt_l15_adapter.sv"                \
     "${DV_ROOT}/design/chip/tile/ariane/src/cache_subsystem/wt_cache_subsystem.sv"            \
     "${DV_ROOT}/design/chip/tile/ariane/src/clint/clint.sv"                                   \
