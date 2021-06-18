@@ -109,6 +109,12 @@ for {set k 0} {$k < $::env(PITON_NUM_TILES)} {incr k} {
     append ALL_DEFAULT_VERILOG_MACROS " RTL_TILE$k"
   }
 }
+  # credit goes to https://github.com/PrincetonUniversity/openpiton/issues/50 
+  # and https://www.xilinx.com/support/answers/72570.html
+  set tmp_PYTHONPATH $env(PYTHONPATH)                                                                               
+  set tmp_PYTHONHOME $env(PYTHONHOME)                                                                               
+  unset ::env(PYTHONPATH)                                                                                           
+  unset ::env(PYTHONHOME)
 
 puts "INFO: Using Defines: ${ALL_DEFAULT_VERILOG_MACROS}"
 
@@ -122,12 +128,6 @@ if  {[info exists ::env(PITON_ARIANE)]} {
   puts "INFO: compiling DTS and bootroms for Ariane (MAX_HARTS=$::env(PITON_NUM_TILES), UART_FREQ=$env(CONFIG_SYS_FREQ))..."
   
   
-  # credit goes to https://github.com/PrincetonUniversity/openpiton/issues/50 
-  # and https://www.xilinx.com/support/answers/72570.html
-  set tmp_PYTHONPATH $env(PYTHONPATH)                                                                               
-  set tmp_PYTHONHOME $env(PYTHONHOME)                                                                               
-  unset ::env(PYTHONPATH)                                                                                           
-  unset ::env(PYTHONHOME)
   
   set TMP [pwd]
   cd $::env(ARIANE_ROOT)/openpiton/bootrom/baremetal
