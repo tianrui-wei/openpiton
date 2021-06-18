@@ -177,6 +177,7 @@ module system(
 `ifdef PITON_FPGA_SYNTH
 `ifdef PITON_ARIANE
 `ifndef VC707_BOARD
+`ifndef KC705_BOARD
 `ifndef VCU118_BOARD
 `ifndef NEXYSVIDEO_BOARD
 `ifndef XUPP3R_BOARD
@@ -190,6 +191,7 @@ module system(
 `endif//XUPP3R_BOARD
 `endif //NEXYSVIDEO_BOARD
 `endif //VCU118_BOARD
+`endif //KC705_BOARD
 `endif  //VC707_BOARD
 `endif //PITON_ARIANE
 `endif //PITON_FPGA_SYNTH
@@ -313,9 +315,11 @@ module system(
 
 `ifdef PITONSYS_SPI
     `ifndef VC707_BOARD
+    `ifndef KC705_BOARD
     input                                       sd_cd,
     `ifndef VCU118_BOARD
     output                                      sd_reset,
+    `endif
     `endif
     `endif
     output                                      sd_clk_out,
@@ -382,6 +386,9 @@ module system(
 `endif
 
 `ifdef VCU118_BOARD
+    // we only have 4 gpio dip switches on this board
+    input  [3:0]                                sw,
+`elsif KC705_BOARD
     // we only have 4 gpio dip switches on this board
     input  [3:0]                                sw,
 `elsif XUPP3R_BOARD
@@ -638,6 +645,27 @@ assign passthru_pll_rst_n = 1'b1;
 //     );
 // `endif
 `ifdef VC707_BOARD
+    wire tck_i, tms_i, trst_ni, td_i, td_o;
+
+    // hook the RISC-V JTAG TAP into the FPGA JTAG chain
+    BSCANE2 #(
+    .JTAG_CHAIN(1) // Value for USER command. Possible values: 1-4.
+    ) BSCANE2_inst (
+        .CAPTURE(), // 1-bit output: CAPTURE output from TAP controller.
+        .DRCK(), // 1-bit output: Gated TCK output. When SEL is asserted, DRCK toggles when CAPTURE or
+        // SHIFT are asserted.
+        .RESET(trst_ni), // 1-bit output: Reset output for TAP controller.
+        .RUNTEST(), // 1-bit output: Output asserted when TAP controller is in Run Test/Idle state.
+        .SEL(), // 1-bit output: USER instruction active output.
+        .SHIFT(), // 1-bit output: SHIFT output from TAP controller.
+        .TCK(tck_i), // 1-bit output: Test Clock output. Fabric connection to TAP Clock pin.
+        .TDI(td_i), // 1-bit output: Test Data Input (TDI) output from TAP controller.
+        .TMS(tms_i), // 1-bit output: Test Mode Select output. Fabric connection to TAP.
+        .UPDATE(), // 1-bit output: UPDATE output from TAP controller
+        .TDO(td_o) // 1-bit input: Test Data Output (TDO) input for USER function.
+    );
+`endif
+`ifdef KC705_BOARD
     wire tck_i, tms_i, trst_ni, td_i, td_o;
 
     // hook the RISC-V JTAG TAP into the FPGA JTAG chain
@@ -1134,9 +1162,11 @@ chipset chipset(
 
 `ifdef PITONSYS_SPI
     `ifndef VC707_BOARD
+    `ifndef KC705_BOARD
     .sd_cd(sd_cd),
     `ifndef VCU118_BOARD
     .sd_reset(sd_reset),
+    `endif
     `endif
     `endif
     .sd_clk_out(sd_clk_out),

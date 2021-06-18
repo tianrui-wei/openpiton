@@ -116,6 +116,8 @@
 
 `ifdef VC707_BOARD
     `define PITON_CHIPSET_DIFF_CLK
+`elsif KC705_BOARD
+    `define PITON_CHIPSET_DIFF_CLK
 `elsif VCU118_BOARD
     `define PITON_CHIPSET_DIFF_CLK
 `elsif XUPP3R_BOARD
@@ -131,6 +133,8 @@
 
 // Reset is active high on VC707 and VCU118
 `ifdef VC707_BOARD
+    `define PITON_FPGA_RST_ACT_HIGH
+`elsif KC705_BOARD
     `define PITON_FPGA_RST_ACT_HIGH
 `elsif VCU118_BOARD
     `define PITON_FPGA_RST_ACT_HIGH

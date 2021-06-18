@@ -333,8 +333,10 @@ module chipset(
 
     `ifdef PITONSYS_SPI
         `ifndef VC707_BOARD
+        `ifndef KC705_BOARD //TODO: why doesn't they use this
         input                                       sd_cd,
         output                                      sd_reset,
+        `endif
         `endif
         output                                      sd_clk_out,
         inout                                       sd_cmd,
@@ -461,6 +463,8 @@ module chipset(
     // Switches
     `ifdef VCU118_BOARD
         // we only have 4 gpio dip switches on this board
+        input  [3:0]                                        sw,
+    `elsif KC705_BOARD
         input  [3:0]                                        sw,
     `elsif XUPP3R_BOARD
         // no switches :(
@@ -748,6 +752,9 @@ end
             `ifdef VCU118_BOARD
                 assign uart_boot_en    = sw[0];
                 assign uart_timeout_en = sw[1];
+            `elsif KC705_BOARD
+                assign uart_boot_en    = sw[0];
+                assign uart_timeout_en = sw[1];
             `elsif XUPP3R_BOARD
                 assign uart_boot_en    = 1'b1;
                 assign uart_timeout_en = 1'b0;
@@ -762,6 +769,8 @@ end
 `ifdef PITON_NOC_POWER_CHIPSET_TEST
     `ifdef VCU118_BOARD
         // only two switches available...
+        assign noc_power_test_hop_count = {2'b0, sw[3:2]};
+    `elsif KC705_BOARD
         assign noc_power_test_hop_count = {2'b0, sw[3:2]};
     `elsif XUPP3R_BOARD
         // no switches :(
@@ -1384,8 +1393,13 @@ chipset_impl_noc_power_test  chipset_impl (
             ,
             .sd_clk(sd_sys_clk),
             `ifndef VC707_BOARD
+            `ifdef KC705_BOARD
+            .sd_cd(0),
+            .sd_reset(),
+            `else
             .sd_cd(sd_cd),
             .sd_reset(sd_reset),
+            `endif
             `else
             .sd_cd(0),
             .sd_reset(),
