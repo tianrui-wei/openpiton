@@ -333,7 +333,7 @@ module chipset(
 
     `ifdef PITONSYS_SPI
         `ifndef VC707_BOARD
-        `ifndef KC705_BOARD //TODO: why doesn't they use this
+        `ifndef KC705_BOARD
         input                                       sd_cd,
         output                                      sd_reset,
         `endif

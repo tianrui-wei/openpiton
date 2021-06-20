@@ -16,7 +16,7 @@
 # ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
 # WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
 # DISCLAIMED. IN NO EVENT SHALL PRINCETON UNIVERSITY BE LIABLE
- FOR ANY
+# FOR ANY
 # DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
 # (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
 # LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
@@ -32,11 +32,11 @@ set_property IOSTANDARD LVDS [get_ports chipset_clk_osc_n]
 
 set_property CLOCK_DEDICATED_ROUTE BACKBONE [get_nets chipset/clk_mmcm/inst/clk_in1_clk_mmcm]
 
-# Reset TODO: this is a high reset
+# Reset
 set_property IOSTANDARD LVCMOS15 [get_ports sys_rst_n]
 set_property PACKAGE_PIN AB7 [get_ports sys_rst_n]
 
-# False paths TODO: disable ethernet
+# False paths
 set_false_path -to [get_cells -hierarchical *afifo_ui_rst_r*]
 set_false_path -to [get_cells -hierarchical *ui_clk_sync_rst_r*]
 set_false_path -to [get_cells -hierarchical *ui_clk_syn_rst_delayed*]
@@ -45,6 +45,23 @@ set_false_path -to [get_cells -hierarchical *chipset_rst_n*]
 set_false_path -from [get_clocks chipset_clk_clk_mmcm] -to [get_clocks net_axi_clk_clk_mmcm]
 
 set_clock_groups -name sync_gr1 -logically_exclusive -group chipset_clk_clk_mmcm -group [get_clocks -include_generated_clocks mc_sys_clk_clk_mmcm]
+
+## To use FTDI FT2232 JTAG
+## Add some additional constraints for JTAG signals, set to 10MHz to be on the safe side
+# create_clock -period 100.000 -name tck_i -waveform {0.000 50.000} [get_ports tck_i]
+
+# set_input_delay -clock tck_i -clock_fall 5.000 [get_ports td_i]
+# set_input_delay -clock tck_i -clock_fall 5.000 [get_ports tms_i]
+# set_output_delay -clock tck_i 5.000 [get_ports td_o]
+
+# # constrain clock domain crossing
+# set_max_delay -datapath_only -from [get_clocks -include_generated_clocks chipset_clk_clk_mmcm] -to [get_clocks tck_i] 15.000
+# set_max_delay -datapath_only -from [get_clocks tck_i] -to [get_clocks -include_generated_clocks chipset_clk_clk_mmcm] 15.000
+
+# set_property -dict {PACKAGE_PIN E10 IOSTANDARD LVCMOS25} [get_ports tck_i]
+# set_property -dict {PACKAGE_PIN H10 IOSTANDARD LVCMOS25} [get_ports td_i]
+# set_property -dict {PACKAGE_PIN G10 IOSTANDARD LVCMOS25} [get_ports td_o]
+# set_property -dict {PACKAGE_PIN F10 IOSTANDARD LVCMOS25} [get_ports tms_i]
 
 # UART
 #IO_L11N_T1_SRCC_35 Sch=uart_rxd_out
@@ -79,7 +96,7 @@ set_property -dict {IOSTANDARD LVCMOS25 PACKAGE_PIN AB22} [get_ports sd_cmd]
 set_property -dict {IOSTANDARD LVCMOS25 PACKAGE_PIN AC20} [get_ports {sd_dat[0]}]
 set_property -dict {IOSTANDARD LVCMOS25 PACKAGE_PIN AA23} [get_ports {sd_dat[1]}]
 set_property -dict {IOSTANDARD LVCMOS25 PACKAGE_PIN AA22} [get_ports {sd_dat[2]}]
-set_property -dict {IOSTANDARD LVCMOS25 PACKAGE_PIN AT30} [get_ports {sd_dat[3]}]
+set_property -dict {IOSTANDARD LVCMOS25 PACKAGE_PIN AC21} [get_ports {sd_dat[3]}]
 # set_property IOSTANDARD LVCMOS18 [get_ports sd_cd]
 # set_property PACKAGE_PIN AP32 [get_ports sd_cd]
 
@@ -163,3 +180,6 @@ set_input_delay -clock [get_clocks sd_clk_out_1] -clock_fall -min -add_delay -14
 set_clock_groups -physically_exclusive -group [get_clocks -include_generated_clocks sd_clk_out] -group [get_clocks -include_generated_clocks sd_clk_out_1]
 set_clock_groups -logically_exclusive -group [get_clocks -include_generated_clocks sd_fast_clk] -group [get_clocks -include_generated_clocks sd_slow_clk]
 set_clock_groups -asynchronous -group [get_clocks -include_generated_clocks chipset_clk_clk_mmcm] -group [get_clocks -filter { NAME =~  "*sd*" }]
+
+set_property slave_banks {32 34} [get_iobanks 33]
+
