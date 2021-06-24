@@ -68,7 +68,6 @@
     `define DDR3_CS_WIDTH           1
     `define DDR3_ODT_WIDTH          1
 `elsif KC705_BOARD
-    // TODO: check the parameters specify mem size in MByte here
     `define BOARD_MEM_SIZE_MB       1024
     `define WORDS_PER_BURST         8
     `define WORD_SIZE               8 // in bytes

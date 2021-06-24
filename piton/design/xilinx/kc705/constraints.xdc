@@ -11,7 +11,7 @@
 #     * Neither the name of Princeton University nor the
 #       names of its contributors may be used to endorse or promote products
 #       derived from this software without specific prior written permission.
-# 
+#
 # THIS SOFTWARE IS PROVIDED BY PRINCETON UNIVERSITY "AS IS" AND
 # ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
 # WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -71,14 +71,14 @@ set_property IOSTANDARD LVCMOS25 [get_ports uart_rx]
 set_property PACKAGE_PIN M19 [get_ports uart_rx]
 
 # Switches
-set_property PACKAGE_PIN Y29 [get_ports sw[0]]
-set_property IOSTANDARD LVCMOS25 [get_ports sw[0]]
-set_property PACKAGE_PIN W29 [get_ports sw[1]]
-set_property IOSTANDARD LVCMOS25 [get_ports sw[1]]
-set_property PACKAGE_PIN AA28 [get_ports sw[2]]
-set_property IOSTANDARD LVCMOS25 [get_ports sw[2]]
-set_property PACKAGE_PIN Y28 [get_ports sw[3]]
-set_property IOSTANDARD LVCMOS25 [get_ports sw[3]]
+set_property PACKAGE_PIN Y29 [get_ports {sw[0]}]
+set_property IOSTANDARD LVCMOS25 [get_ports {sw[0]}]
+set_property PACKAGE_PIN W29 [get_ports {sw[1]}]
+set_property IOSTANDARD LVCMOS25 [get_ports {sw[1]}]
+set_property PACKAGE_PIN AA28 [get_ports {sw[2]}]
+set_property IOSTANDARD LVCMOS25 [get_ports {sw[2]}]
+set_property PACKAGE_PIN Y28 [get_ports {sw[3]}]
+set_property IOSTANDARD LVCMOS25 [get_ports {sw[3]}]
 
 # TODO: what to do with the switches
 # set_property PACKAGE_PIN AW30 [get_ports sw[4]]
@@ -105,29 +105,29 @@ set_property -dict {IOSTANDARD LVCMOS25 PACKAGE_PIN AC21} [get_ports {sd_dat[3]}
 
 ## LEDs
 
-set_property PACKAGE_PIN AB8 [get_ports leds[0]]
-set_property IOSTANDARD LVCMOS15 [get_ports leds[0]]
-set_property PACKAGE_PIN AA8 [get_ports leds[1]]
-set_property IOSTANDARD LVCMOS15 [get_ports leds[1]]
-set_property PACKAGE_PIN AC9 [get_ports leds[2]]
-set_property IOSTANDARD LVCMOS15 [get_ports leds[2]]
-set_property PACKAGE_PIN AB9 [get_ports leds[3]]
-set_property IOSTANDARD LVCMOS15 [get_ports leds[3]]
-set_property PACKAGE_PIN AE26 [get_ports leds[4]]
-set_property IOSTANDARD LVCMOS25 [get_ports leds[4]]
-set_property PACKAGE_PIN G19 [get_ports leds[5]]
-set_property IOSTANDARD LVCMOS25 [get_ports leds[5]]
-set_property PACKAGE_PIN E18 [get_ports leds[6]]
-set_property IOSTANDARD LVCMOS25 [get_ports leds[6]]
-set_property PACKAGE_PIN F16 [get_ports leds[7]]
-set_property IOSTANDARD LVCMOS25 [get_ports leds[7]]
+set_property PACKAGE_PIN AB8 [get_ports {leds[0]}]
+set_property IOSTANDARD LVCMOS15 [get_ports {leds[0]}]
+set_property PACKAGE_PIN AA8 [get_ports {leds[1]}]
+set_property IOSTANDARD LVCMOS15 [get_ports {leds[1]}]
+set_property PACKAGE_PIN AC9 [get_ports {leds[2]}]
+set_property IOSTANDARD LVCMOS15 [get_ports {leds[2]}]
+set_property PACKAGE_PIN AB9 [get_ports {leds[3]}]
+set_property IOSTANDARD LVCMOS15 [get_ports {leds[3]}]
+set_property PACKAGE_PIN AE26 [get_ports {leds[4]}]
+set_property IOSTANDARD LVCMOS25 [get_ports {leds[4]}]
+set_property PACKAGE_PIN G19 [get_ports {leds[5]}]
+set_property IOSTANDARD LVCMOS25 [get_ports {leds[5]}]
+set_property PACKAGE_PIN E18 [get_ports {leds[6]}]
+set_property IOSTANDARD LVCMOS25 [get_ports {leds[6]}]
+set_property PACKAGE_PIN F16 [get_ports {leds[7]}]
+set_property IOSTANDARD LVCMOS25 [get_ports {leds[7]}]
 
 #############################################
 # SD Card Constraints for 25MHz
 #############################################
 create_generated_clock -name sd_fast_clk -source [get_pins chipset/clk_mmcm/sd_sys_clk] -divide_by 2 [get_pins chipset/chipset_impl/piton_sd_top/sdc_controller/clock_divider0/fast_clk_reg/Q]
 create_generated_clock -name sd_slow_clk -source [get_pins chipset/clk_mmcm/sd_sys_clk] -divide_by 200 [get_pins chipset/chipset_impl/piton_sd_top/sdc_controller/clock_divider0/slow_clk_reg/Q]
-create_generated_clock -name sd_clk_out   -source [get_pins chipset/sd_clk_oddr/C] -divide_by 1 -add -master_clock sd_fast_clk [get_ports sd_clk_out]
+create_generated_clock -name sd_clk_out -source [get_pins chipset/sd_clk_oddr/C] -divide_by 1 -add -master_clock sd_fast_clk [get_ports sd_clk_out]
 create_generated_clock -name sd_clk_out_1 -source [get_pins chipset/sd_clk_oddr/C] -divide_by 1 -add -master_clock sd_slow_clk [get_ports sd_clk_out]
 
 # compensate for board trace uncertainty
@@ -181,5 +181,4 @@ set_clock_groups -physically_exclusive -group [get_clocks -include_generated_clo
 set_clock_groups -logically_exclusive -group [get_clocks -include_generated_clocks sd_fast_clk] -group [get_clocks -include_generated_clocks sd_slow_clk]
 set_clock_groups -asynchronous -group [get_clocks -include_generated_clocks chipset_clk_clk_mmcm] -group [get_clocks -filter { NAME =~  "*sd*" }]
 
-set_property slave_banks {32 34} [get_iobanks 33]
-
+set_property DCI_CASCADE {32 34} [get_iobanks 33]

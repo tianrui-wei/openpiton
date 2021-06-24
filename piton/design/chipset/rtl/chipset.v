@@ -753,8 +753,8 @@ end
                 assign uart_boot_en    = sw[0];
                 assign uart_timeout_en = sw[1];
             `elsif KC705_BOARD
-                assign uart_boot_en    = sw[0];
-                assign uart_timeout_en = sw[1];
+                assign uart_boot_en    = 1'b0;
+                assign uart_timeout_en = 1'b0;
             `elsif XUPP3R_BOARD
                 assign uart_boot_en    = 1'b1;
                 assign uart_timeout_en = 1'b0;
