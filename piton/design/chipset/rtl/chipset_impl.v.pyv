@@ -697,7 +697,7 @@ credit_to_valrdy noc3_xbar_to_%s(
 // Memory controller.  Either uses "fake" simulated
 // memory controller or FPGA memory controllers
 `ifdef PITON_FPGA_MC_DDR3
-    `ifdef F1_BOARD
+    `ifdef PITON_AXI_EXTERNAL_DRAM
         f1_mc_top mc_top(
             .sys_clk(chipset_clk),
             .sys_rst_n(chipset_rst_n),
@@ -820,7 +820,7 @@ credit_to_valrdy noc3_xbar_to_%s(
         `endif // XUPP3R_BOARD
             .ddr_odt(ddr_odt)
         );
-    `endif // F1_BOARD
+    `endif // PITON_AXI_EXTERNAL_DRAM
 
 `else
 

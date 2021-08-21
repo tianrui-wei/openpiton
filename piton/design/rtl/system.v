@@ -84,7 +84,9 @@
 //                              use a DDR2/3 memory controller.  If
 //                              this is not set, a default "fake"
 //                              simulated DRAM is used.
-
+//  PITON_FPGA_LITEX_CHIPSET    Uses the Litex system as chipset. In this case, irq and axi
+//                              are used instead of the original chipset
+//
 module system(
 `ifndef PITON_FPGA_SYNTH
     // I/O settings
@@ -176,6 +178,7 @@ module system(
 
 `ifdef PITON_FPGA_SYNTH
 `ifdef PITON_ARIANE
+`ifndef PITON_FPGA_LITEX_CHIPSET
 `ifndef VC707_BOARD
 `ifndef KC705_BOARD
 `ifndef VCU118_BOARD
@@ -193,6 +196,7 @@ module system(
 `endif //VCU118_BOARD
 `endif //KC705_BOARD
 `endif  //VC707_BOARD
+`endif //PITON_FPGA_LITEX_CHIPSET
 `endif //PITON_ARIANE
 `endif //PITON_FPGA_SYNTH
 
@@ -207,7 +211,7 @@ module system(
     // DRAM and I/O interfaces
 `ifndef PITONSYS_NO_MC
 `ifdef PITON_FPGA_MC_DDR3
-`ifndef F1_BOARD
+`ifndef PITON_AXI_EXTERNAL_DRAM
     // Generalized interface for any FPGA board we support.
     // Not all signals will be used for all FPGA boards (see constraints)
     `ifdef PITONSYS_DDR4
@@ -241,7 +245,8 @@ module system(
     output [`DDR3_DM_WIDTH-1:0]                 ddr_dm,
     `endif // PITONSYS_DDR4
     output [`DDR3_ODT_WIDTH-1:0]                ddr_odt,
-`else //ifndef F1_BOARD 
+`else //ifndef PITON_AXI_EXTERNAL_DRAM
+
     input                                        mc_clk,
     // AXI Write Address Channel Signals
     output wire [`AXI4_ID_WIDTH     -1:0]    m_axi_awid,
@@ -299,7 +304,8 @@ module system(
     output wire                                   m_axi_bready,
 
     input  wire                                   ddr_ready,
-`endif // endif F1_BOARD
+
+`endif // endif PITON_AXI_EXTERNAL_DRAM
 `endif // endif PITON_FPGA_MC_DDR3
 `endif // endif PITONSYS_NO_MC
 
@@ -393,6 +399,7 @@ module system(
     input  [3:0]                                sw,
 `elsif XUPP3R_BOARD
     // no switches :(
+`elsif PITON_FPGA_LIY
 `else
     input  [7:0]                                sw,
 `endif

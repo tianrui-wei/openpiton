@@ -147,6 +147,13 @@
     `undef PITON_FPGA_SD_BOOT
     `undef PITONSYS_SPI
     `define PITONSYS_AXI4_MEM
+    `define PITON_AXI_EXTERNAL_DRAM
+`endif
+
+`ifdef PITON_FPGA_LITEX_CHIPSET
+    `define PITON_AXI_EXTERNAL_DRAM
+    `define PITON_FPGA_SYNTH
+    `define PITON_FPGA_MC_DDR3
 `endif
 
 // If PITON_FPGA_SD_BOOT is set we should always include SPI
