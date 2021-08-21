@@ -127,6 +127,7 @@ BRAM_CONFIG["bram_boot"]  = BramCfg(256, 512)
 # CONFIG_SRAM_L2_DIR_WIDTH = int(os.environ.get('CONFIG_SRAM_L2_DIR_WIDTH', '64'))
 
 from pyhplib_sram import *
+import sys
 
 # devices file
 fileName = "devices.xml"
@@ -140,6 +141,11 @@ DEVICES_XML_FILENAME = os.path.join(os.getenv("PROTOSYN_RUNTIME_DESIGN_PATH", ""
                                     fileName)
 
 print("// " + DEVICES_XML_FILENAME)
+
+if not os.path.isfile(DEVICES_XML_FILENAME):
+    print("Error: devices.xml not found")
+    DEVICES_XML_FILENAME = os.path.join(os.getenv("PITON_ROOT", ""), "piton/design/xilinx/genesys2/devices.xml")
+    print("// " + DEVICES_XML_FILENAME)
 
 def Replicate(text):
     newtext = ''
