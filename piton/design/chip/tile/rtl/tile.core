@@ -17,6 +17,7 @@ filesets:
             - openpiton::sparc_core
             - openpiton::fpu
             - openpiton::dmbr
+            - openhwgroup::ariane
         file_type: verilogSource-2001
 
 targets:

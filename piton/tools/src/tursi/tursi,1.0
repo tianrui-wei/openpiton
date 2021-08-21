@@ -86,7 +86,8 @@ def setParserOptions(parser):
         "opencores::fft"                : "OpenCores Fast Fourier Transformation (FFT)",
         "openpiton::gng_top"            : "OpenCores Gausian Noise Generator (GNG) together with OpenPiton wrapper",
         "openpiton::fft_top"            : "OpenCores Fast Fourier Transformation (FFT) together with OpenPiton wrapper",
-        "verticalresearchgroup::miaow"  : "MIAOW GPGPU"
+        "verticalresearchgroup::miaow"  : "MIAOW GPGPU",
+        "openhwgroup::ariane"  : "openhwgroup cva6"
     }
     fusesoc_core_help_str = \
 """Available core for picking using FuseSoc (default: %(default)s):
@@ -328,7 +329,8 @@ fusesoc2toplevel = {
     "opencores::fft"                : "fftmain",
     "openpiton::gng_top"            : "gng_top",
     "openpiton::fft_top"            : "fft_top",
-    "verticalresearchgroup::miaow"  : "neko"
+    "verticalresearchgroup::miaow"  : "neko",
+    "openhwgroup::ariane"           : "ariane_wrapped"
 }
 
 json_template = """{{
@@ -414,6 +416,7 @@ def main():
 
     # FuseSoC library configuration file
     fusesoc_config_arg = os.environ['PITON_ROOT'] + "/fusesoc.conf"
+    ariane_dir = os.environ['PITON_ROOT'] + "/piton/design/chip/tile/ariane/src/common_cells/include"
     if args.fusesoc_conf != None:
         fusesoc_config_arg = args.fusesoc_conf
     if not os.path.isfile(fusesoc_config_arg):
@@ -470,10 +473,6 @@ def main():
 
     elif args.core == 'ariane':
         args.config_rtl.append('PITON_ARIANE')
-
-        ## Temporary until we create a solution for SystemVerilog code
-        print_error('Due to lack of support for "pickling" of SystemVerilog code, the Ariane core configuration option is not supported')
-        sys.exit(1)
 
         for i in range(int(args.num_tiles)):
             args.config_rtl.append('RTL_ARIANE' + str(i))
@@ -533,7 +532,7 @@ def main():
 
     if do_pickle:
         #print_info("Pickling: %s" % args.core_name)
-        cmd = 'fusesoc --config {} run --build --target=pickle --tool=icarus {} --iverilog_options="{}"'.format(fusesoc_config_arg, args.fusesoc_core, " ".join(["-D%s " % define for define in args.config_rtl]))
+        cmd = 'fusesoc --config {} run --build --target=pickle --tool=slang {} --extra_options="--preprocess -I {} {}" > generated.v'.format(fusesoc_config_arg, args.fusesoc_core, ariane_dir, " ".join(["-D %s " % define for define in args.config_rtl]))
         print_info(cmd)
         ret_val = os.system(cmd)
         if ret_val != 0:
