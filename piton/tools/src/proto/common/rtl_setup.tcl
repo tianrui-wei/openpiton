@@ -474,13 +474,14 @@ set CHIP_RTL_IMPL_FILES [list \
     "${DV_ROOT}/design/chip/tile/ariane/src/clint/clint.sv"                                   \
     "${DV_ROOT}/design/chip/tile/ariane/src/clint/axi_lite_interface.sv"                      \
     "${DV_ROOT}/design/chip/tile/ariane/src/riscv-dbg/debug_rom/debug_rom.sv"                 \
+    "${DV_ROOT}/design/chip/tile/ariane/src/riscv-dbg/debug_rom/debug_rom_one_scratch.sv"                 \
     "${DV_ROOT}/design/chip/tile/ariane/src/riscv-dbg/src/dm_csrs.sv"                         \
     "${DV_ROOT}/design/chip/tile/ariane/src/riscv-dbg/src/dm_mem.sv"                          \
     "${DV_ROOT}/design/chip/tile/ariane/src/riscv-dbg/src/dm_top.sv"                          \
     "${DV_ROOT}/design/chip/tile/ariane/src/riscv-dbg/src/dmi_cdc.sv"                         \
     "${DV_ROOT}/design/chip/tile/ariane/src/riscv-dbg/src/dmi_jtag.sv"                        \
     "${DV_ROOT}/design/chip/tile/ariane/src/riscv-dbg/src/dm_sba.sv"                          \
-    "${DV_ROOT}/design/chip/tile/ariane/src/riscv-dbg/src/dmi_jtag_tap.sv"                    \
+    "${DV_ROOT}/design/chip/tile/ariane/src/riscv-dbg/src/dmi_bscane_tap.sv"                    \
     "${DV_ROOT}/design/chip/tile/ariane/openpiton/riscv_peripherals.sv"                       \
     "${DV_ROOT}/design/chip/tile/ariane/openpiton/ariane_verilog_wrap.sv"                     \
     "${DV_ROOT}/design/chip/tile/ariane/openpiton/bootrom/baremetal/bootrom.sv"               \
