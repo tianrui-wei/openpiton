@@ -58,6 +58,135 @@ module fake_mem_ctrl(
     input wire noc_ready_out
 
 );
+`define AXI4_BRIDGE
+`ifdef AXI4_BRIDGE
+
+`include "noc_axi4_bridge_define.vh"
+	logic [`AXI4_ID_WIDTH     -1:0]     s_axi_awid;
+	logic [`AXI4_ADDR_WIDTH   -1:0]     s_axi_awaddr;
+	logic [`AXI4_LEN_WIDTH    -1:0]     s_axi_awlen;
+	logic [`AXI4_SIZE_WIDTH   -1:0]     s_axi_awsize;
+	logic [`AXI4_BURST_WIDTH  -1:0]     s_axi_awburst;
+	logic                               s_axi_awlock;
+	logic [`AXI4_CACHE_WIDTH  -1:0]     s_axi_awcache;
+	logic [`AXI4_PROT_WIDTH   -1:0]     s_axi_awprot;
+	logic [`AXI4_QOS_WIDTH    -1:0]     s_axi_awqos;
+	logic [`AXI4_REGION_WIDTH -1:0]     s_axi_awregion;
+	logic [`AXI4_USER_WIDTH   -1:0]     s_axi_awuser;
+	logic                               s_axi_awvalid;
+	logic                               s_axi_awready;
+
+	logic  [`AXI4_ID_WIDTH     -1:0]    s_axi_wid;
+	logic  [`AXI4_DATA_WIDTH   -1:0]    s_axi_wdata;
+	logic  [`AXI4_STRB_WIDTH   -1:0]    s_axi_wstrb;
+	logic                               s_axi_wlast;
+	logic  [`AXI4_USER_WIDTH   -1:0]    s_axi_wuser;
+	logic                               s_axi_wvalid;
+	logic                               s_axi_wready;
+	
+	logic  [`AXI4_ID_WIDTH     -1:0]    s_axi_arid;
+	logic  [`AXI4_ADDR_WIDTH   -1:0]    s_axi_araddr;
+	logic  [`AXI4_LEN_WIDTH    -1:0]    s_axi_arlen;
+	logic  [`AXI4_SIZE_WIDTH   -1:0]    s_axi_arsize;
+	logic  [`AXI4_BURST_WIDTH  -1:0]    s_axi_arburst;
+	logic                               s_axi_arlock;
+	logic  [`AXI4_CACHE_WIDTH  -1:0]    s_axi_arcache;
+	logic  [`AXI4_PROT_WIDTH   -1:0]    s_axi_arprot;
+	logic  [`AXI4_QOS_WIDTH    -1:0]    s_axi_arqos;
+	logic  [`AXI4_REGION_WIDTH -1:0]    s_axi_arregion;
+	logic  [`AXI4_USER_WIDTH   -1:0]    s_axi_aruser;
+	logic                               s_axi_arvalid;
+	logic                               s_axi_arready;
+	
+	logic  [`AXI4_ID_WIDTH     -1:0]    s_axi_rid;
+	logic  [`AXI4_DATA_WIDTH   -1:0]    s_axi_rdata;
+	logic  [`AXI4_RESP_WIDTH   -1:0]    s_axi_rresp;
+	logic                               s_axi_rlast;
+	logic  [`AXI4_USER_WIDTH   -1:0]    s_axi_ruser;
+	logic                               s_axi_rvalid;
+	logic                               s_axi_rready;
+	
+	logic  [`AXI4_ID_WIDTH     -1:0]    s_axi_bid;
+	logic  [`AXI4_RESP_WIDTH   -1:0]    s_axi_bresp;
+	logic  [`AXI4_USER_WIDTH   -1:0]    s_axi_buser;
+	logic                               s_axi_bvalid;
+	logic                               s_axi_bready;
+
+noc_axi4_bridge bridge_i (
+	.clk(clk),
+	.rst_n(rst_n),
+	.uart_boot_en(1'b1),
+	.phy_init_done(1'b1),
+.src_bridge_vr_noc2_val(noc_valid_in),
+.src_bridge_vr_noc2_dat(noc_data_in),
+.src_bridge_vr_noc2_rdy(noc_ready_in),
+.bridge_dst_vr_noc3_val(noc_valid_out),
+.bridge_dst_vr_noc3_dat(noc_data_out),
+.bridge_dst_vr_noc3_rdy(noc_ready_out),
+		.m_axi_awid    			( s_axi_awid		),
+		.m_axi_awaddr    		( s_axi_awaddr		),
+		.m_axi_awlen    		( s_axi_awlen		),
+		.m_axi_awsize    		( s_axi_awsize		),
+		.m_axi_awburst    		( s_axi_awburst		),
+		.m_axi_awlock    		( s_axi_awlock		),
+		.m_axi_awcache    		( s_axi_awcache		),
+		.m_axi_awprot    		( s_axi_awprot		),
+		.m_axi_awqos    		( s_axi_awqos		),
+		.m_axi_awregion    		( s_axi_awregion	),
+		.m_axi_awuser    		( s_axi_awuser		),
+		.m_axi_awvalid    		( s_axi_awvalid		),
+		.m_axi_awready    		( s_axi_awready		),
+
+		.m_axi_wid    			( s_axi_wid			),
+		.m_axi_wdata    		( s_axi_wdata		),
+		.m_axi_wstrb    		( s_axi_wstrb		),
+		.m_axi_wlast    		( s_axi_wlast		),
+		.m_axi_wuser    		( s_axi_wuser		),
+		.m_axi_wvalid    		( s_axi_wvalid		),
+		.m_axi_wready    		( s_axi_wready		),
+
+		.m_axi_bid    			( s_axi_bid			),
+		.m_axi_bresp    		( s_axi_bresp		),
+		.m_axi_buser    		( s_axi_buser		),
+		.m_axi_bvalid    		( s_axi_bvalid		),
+		.m_axi_bready    		( s_axi_bready		),
+
+		.m_axi_arid    			( s_axi_arid		),
+		.m_axi_araddr    		( s_axi_araddr		),
+		.m_axi_arlen    		( s_axi_arlen		),
+		.m_axi_arsize    		( s_axi_arsize		),
+		.m_axi_arburst    		( s_axi_arburst		),
+		.m_axi_arlock    		( s_axi_arlock		),
+		.m_axi_arcache    		( s_axi_arcache		),
+		.m_axi_arprot    		( s_axi_arprot		),
+		.m_axi_arqos    		( s_axi_arqos		),
+		.m_axi_arregion    		( s_axi_arregion	),
+		.m_axi_aruser    		( s_axi_aruser		),
+		.m_axi_arvalid    		( s_axi_arvalid		),
+		.m_axi_arready    		( s_axi_arready		),
+
+		.m_axi_rid    			( s_axi_rid),
+		.m_axi_rdata    		( s_axi_rdata		),
+		.m_axi_rresp    		( s_axi_rresp		),
+		.m_axi_rlast    		( s_axi_rlast		),
+		.m_axi_ruser    		( s_axi_ruser		),
+		.m_axi_rvalid    		( s_axi_rvalid		),
+		.m_axi_rready    		( s_axi_rready		)		
+
+);
+
+axi_ram #(
+	.DATA_WIDTH(`AXI4_DATA_WIDTH),
+	.ADDR_WIDTH(`AXI4_ADDR_WIDTH),
+	.ID_WIDTH(`AXI4_ID_WIDTH),
+	.PIPELINE_OUTPUT(1)
+) ram_i (
+	.clk(clk),
+	.rst(~rst_n),
+	.*
+);
+
+`else
 
 reg mem_valid_in;
 reg [3*`NOC_DATA_WIDTH-1:0] mem_header_in;
@@ -252,6 +381,7 @@ begin
         case (msg_type)
         `MSG_TYPE_LOAD_MEM:
         begin
+            $display("Fakemem load: size: %h, address: %h", msg_data_size, msg_addr);
 `ifdef PITON_DPI
             msg_send_data[0] = read_64b_call({{(`MEM_ADDR_WIDTH-`PHY_ADDR_WIDTH){1'b0}}, msg_addr[`L2_TAG],msg_addr[`L2_TAG_INDEX],6'b000000});
             msg_send_data[1] = read_64b_call({{(`MEM_ADDR_WIDTH-`PHY_ADDR_WIDTH){1'b0}}, msg_addr[`L2_TAG],msg_addr[`L2_TAG_INDEX],6'b001000});
@@ -286,6 +416,7 @@ begin
         end
         `MSG_TYPE_STORE_MEM:
         begin
+            $display("Fakemem store: size: %h, address: %h", msg_data_size, msg_addr);
 `ifdef PITON_DPI
             write_64b_call({{(`MEM_ADDR_WIDTH-`PHY_ADDR_WIDTH){1'b0}}, msg_addr[`L2_TAG],msg_addr[`L2_TAG_INDEX],6'b000000},buf_in_mem_f[3]);
             write_64b_call({{(`MEM_ADDR_WIDTH-`PHY_ADDR_WIDTH){1'b0}}, msg_addr[`L2_TAG],msg_addr[`L2_TAG_INDEX],6'b001000},buf_in_mem_f[4]);
@@ -758,6 +889,8 @@ always @(posedge clk) begin
     end
 end
 `endif // endif MINIMAL_MONITORING
+
+`endif
 
 endmodule
 

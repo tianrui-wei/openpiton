@@ -24,3 +24,4 @@
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 fake_mem_ctrl.v
+axi_ram.v

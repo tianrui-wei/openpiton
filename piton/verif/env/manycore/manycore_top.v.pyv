@@ -113,6 +113,11 @@ reg                             fail_flag;
 // Simulated Clocks
 ////////////////////
 
+initial begin
+$fsdbDumpfile("tb_manycore.fsdb");
+$fsdbDumpvars(0, cmp_top);
+end
+
 `ifndef VERILATOR
 `ifndef USE_FAKE_PLL_AND_CLKMUX
 always #5000 core_ref_clk = ~core_ref_clk;                      // 100MHz
