@@ -74,6 +74,7 @@ module noc_axi4_bridge_read (
 
 localparam IDLE = 2'd0;
 localparam GOT_REQ = 2'd1;
+localparam SENT_REQ = 2'd2;
 localparam GOT_RESP = 2'd2;
 localparam SEND_RESP = 2'd3;
 
@@ -87,7 +88,7 @@ wire [`AXI4_ADDR_WIDTH-1:0]addr_paddings = `AXI4_ADDR_WIDTH'b0;
     assign m_axi_arsize   = `AXI4_SIZE_WIDTH'b110; // Always transfer 64 bytes
     assign m_axi_arburst  = `AXI4_BURST_WIDTH'b01; // fixed address in bursts (doesn't matter cause we use length-1 bursts)
     assign m_axi_arlock   = 1'b0; // Do not use locks
-    assign m_axi_arcache  = `AXI4_CACHE_WIDTH'b11; // Non-cacheable bufferable requests
+    assign m_axi_arcache  = `AXI4_CACHE_WIDTH'b00; // Non-cacheable non-bufferable requests
     assign m_axi_arprot   = `AXI4_PROT_WIDTH'b0; // Data access, non-secure access, unpriveleged access
     assign m_axi_arqos    = `AXI4_QOS_WIDTH'b0; // Do not use qos
     assign m_axi_arregion = `AXI4_REGION_WIDTH'b0; // Do not use regions
@@ -97,7 +98,7 @@ wire [`AXI4_ADDR_WIDTH-1:0]addr_paddings = `AXI4_ADDR_WIDTH'b0;
 wire m_axi_argo = m_axi_arvalid & m_axi_arready;
 wire req_go = req_val & req_rdy;
 
-reg req_state;
+reg [1:0] req_state;
 reg [`MSG_HEADER_WIDTH-1:0] req_header_f;
 reg [`NOC_AXI4_BRIDGE_BUFFER_ADDR_SIZE-1:0] req_id_f;
 
@@ -234,8 +235,9 @@ assign resp_go = resp_val & resp_rdy;
 reg [1:0] resp_state;
 
 assign resp_val = (resp_state == SEND_RESP);
-assign m_axi_rready = (resp_state == IDLE);
+assign m_axi_rready = (resp_state == IDLE); //TODO: make sure arvalid and this are never high at the same cycle
 
+// issue: any out of order-ness will wreck this
 always  @(posedge clk) begin
     if(~rst_n) begin
         resp_id_f <= 0;
@@ -274,6 +276,9 @@ always @(posedge clk) begin
         data_offseted <= 0;
     end 
     else begin
+		// if AR and R happens within a single cycle, this gets toasted
+		// because axi id don't have any reusing, so the size[] stuff work
+		// properly
         data_offseted <= m_axi_rgo ? (m_axi_rdata >> (8*offset[m_axi_rid])) : 0;
     end
 end

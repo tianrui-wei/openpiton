@@ -56,6 +56,7 @@ reg [`NOC_DATA_WIDTH-1:0]           pkt_w2;
 reg [`NOC_DATA_WIDTH-1:0]           pkt_w3; 
 reg [`NOC_DATA_WIDTH-1:0]           in_data_buf[`PAYLOAD_LEN-1:0]; //buffer for incomming packets
 reg [`MSG_LENGTH_WIDTH-1:0]         remaining_flits; //flits remaining in current packet
+reg [`MSG_LENGTH_WIDTH-1:0]         num_data_flits; //flits remaining in current packet
 reg [2:0]                           state;
 
 assign flit_in_rdy = (state != SEND) & phy_init_done;
@@ -66,6 +67,7 @@ always @(posedge clk) begin
   if(~rst_n) begin
     state <= ACCEPT_W1;
     remaining_flits <= 0;
+	num_data_flits <= 0;
     pkt_w1 <= 0;
     pkt_w2 <= 0;
     pkt_w3 <= 0;
@@ -75,12 +77,16 @@ always @(posedge clk) begin
       ACCEPT_W1: begin
         if (flit_in_go) begin
           state <= ACCEPT_W2;
+		  // payload will always be >= 2 (doesn't count itself)
+		  // load: first header flit, payload len will be 2
           remaining_flits <= flit_in[`MSG_LENGTH]-1;
+		  num_data_flits <= flit_in[`MSG_LENGTH]-2;
           pkt_w1 <= flit_in;  
         end
         else begin
           state <= state;
           remaining_flits <= remaining_flits;
+		  num_data_flits <= num_data_flits;
           pkt_w1 <= pkt_w1;
         end
         pkt_w2 <= pkt_w2;
@@ -97,6 +103,7 @@ always @(posedge clk) begin
           remaining_flits <= remaining_flits;
           pkt_w2 <= pkt_w2;
         end
+        num_data_flits <= num_data_flits;
         pkt_w1 <= pkt_w1;
         pkt_w3 <= pkt_w3;  
       end
@@ -110,17 +117,19 @@ always @(posedge clk) begin
             state <= ACCEPT_DATA;
             remaining_flits <= remaining_flits - 1;
           end
-          pkt_w3 <= flit_in;  
+          pkt_w3 <= flit_in;
         end
         else begin
           state <= state;
           remaining_flits <= remaining_flits;
           pkt_w3 <= pkt_w3;  
         end
+		num_data_flits <= num_data_flits;
         pkt_w1 <= pkt_w1;
         pkt_w2 <= pkt_w2;
       end
       ACCEPT_DATA: begin
+		  //FIXME: should this be checked?
         if (flit_in_go) begin
           if (remaining_flits == 0) begin
             state <= SEND;
@@ -135,6 +144,7 @@ always @(posedge clk) begin
           state <= state;
           remaining_flits <= remaining_flits;
         end
+		num_data_flits <= num_data_flits;
         pkt_w1 <= pkt_w1;
         pkt_w2 <= pkt_w2;
         pkt_w3 <= pkt_w3;  
@@ -143,6 +153,7 @@ always @(posedge clk) begin
         if (out_rdy) begin
           state <= ACCEPT_W1;
           remaining_flits <= 0;
+		  num_data_flits <= 0;
           pkt_w1 <= 0;
           pkt_w2 <= 0;
           pkt_w3 <= 0;
@@ -150,6 +161,7 @@ always @(posedge clk) begin
         else begin
           state <= state;
           remaining_flits <= remaining_flits;
+		  num_data_flits <= num_data_flits;
           pkt_w1 <= pkt_w1;
           pkt_w2 <= pkt_w2;
           pkt_w3 <= pkt_w3;  
@@ -178,6 +190,7 @@ endgenerate
 
 
 assign header_out = {pkt_w3, pkt_w2, pkt_w1};
-assign data_out = {in_data_buf[0], in_data_buf[1], in_data_buf[2], in_data_buf[3], in_data_buf[4], in_data_buf[5], in_data_buf[6], in_data_buf[7]};
+assign data_out = {in_data_buf[0], in_data_buf[1], in_data_buf[2], in_data_buf[3], in_data_buf[4], in_data_buf[5], in_data_buf[6], in_data_buf[7]} >> (`NOC_DATA_WIDTH * (`PAYLOAD_LEN - num_data_flits));
+//assign data_out = {in_data_buf[0], in_data_buf[1], in_data_buf[2], in_data_buf[3], in_data_buf[4], in_data_buf[5], in_data_buf[6], in_data_buf[7]};
 
 endmodule

@@ -77,6 +77,18 @@ localparam WAITING = 1'd1;
 localparam READ  = 1'd0;
 localparam WRITE = 1'd1;
 
+reg [`AXI4_DATA_WIDTH-1:0] ser_data_f;
+
+wire [`MSG_HEADER_WIDTH-1:0] ser_header_f;
+
+reg ser_val_f;
+
+reg [`AXI4_DATA_WIDTH-1:0] ser_data_ff;
+
+reg [`MSG_HEADER_WIDTH-1:0] ser_header_ff;
+
+reg ser_val_ff;
+
 
 reg [`NOC_AXI4_BRIDGE_IN_FLIGHT_LIMIT-1:0]                          pkt_state_buf ;
 reg [`MSG_HEADER_WIDTH-1:0]   pkt_header[`NOC_AXI4_BRIDGE_IN_FLIGHT_LIMIT-1:0];
@@ -86,12 +98,6 @@ reg [`NOC_AXI4_BRIDGE_BUFFER_ADDR_SIZE-1:0]    fifo_in;
 reg [`NOC_AXI4_BRIDGE_BUFFER_ADDR_SIZE-1:0]    fifo_out;
 reg preser_arb;
 reg [`NOC_AXI4_BRIDGE_IN_FLIGHT_LIMIT-1:0] bram_rdy;
-reg [`AXI4_DATA_WIDTH-1:0] ser_data_f;
-wire [`MSG_HEADER_WIDTH-1:0] ser_header_f;
-reg ser_val_f;
-reg [`AXI4_DATA_WIDTH-1:0] ser_data_ff;
-reg [`MSG_HEADER_WIDTH-1:0] ser_header_ff;
-reg ser_val_ff;
 
 
 wire deser_go = (deser_rdy & deser_val);
@@ -100,8 +106,7 @@ wire read_resp_go = (read_resp_val & read_resp_rdy);
 wire write_req_go = (write_req_val & write_req_rdy);
 wire write_resp_go = (write_resp_val & write_resp_rdy);
 wire req_go = read_req_go || write_req_go;
-wire preser_rdy = ~ser_val_ff || ser_rdy;
-wire ser_go = ser_val & ser_rdy;
+wire preser_rdy = ~ser_val || ser_rdy;
 
 //
 //  SEND REQUESTS 
@@ -154,7 +159,8 @@ noc_axi4_bridge_sram_data noc_axi4_bridge_sram_data
 (
     .MEMCLK(clk), 
     .RESET_N(rst_n),
-    .CEA(1),
+    .CEA(1'b1),
+	//TODO: can 
     .AA(write_req_id),
     .RDWENA(1'b1),
     .CEB(deser_go),
@@ -175,7 +181,6 @@ assign write_req_id = fifo_out;
 
 assign deser_rdy = (pkt_state_buf[fifo_in] == INVALID);
 
-
 //
 // GET_RESPONSE
 //
@@ -193,7 +198,8 @@ noc_axi4_bridge_sram_req noc_axi4_bridge_sram_req
 (
     .MEMCLK(clk), 
     .RESET_N(rst_n),
-    .CEA(1),
+	// don't pollute
+    .CEA(preser_rdy ? (preser_arb ? write_resp_val : read_resp_val) : 1'b0),
     .AA(preser_arb ? write_resp_id : read_resp_id),
     .RDWENA(1'b1),
     .CEB(req_go),
@@ -228,13 +234,16 @@ assign write_resp_rdy = preser_arb & preser_rdy;
 always @(posedge clk) begin
     if(~rst_n) begin
         ser_data_f <= 0;
-        ser_val_f <= 0;
-        ser_header_ff <= 0;
-        ser_val_ff <= 0;
         ser_data_ff <= 0;
+        ser_val_f <= 0;
+        ser_val_ff <= 0;
+		ser_header_ff <= 0;
     end 
     else begin
         if (preser_rdy) begin
+			ser_header_ff <= ser_header_f;
+            ser_val_ff <= ser_val_f;
+			ser_data_ff <= ser_data_f;
             if (preser_arb) begin
                 ser_val_f <= write_resp_val;
                 ser_data_f <= 0;
@@ -243,24 +252,23 @@ always @(posedge clk) begin
                 ser_val_f <= read_resp_val;
                 ser_data_f <= read_resp_data;
             end
-            ser_val_ff <= ser_val_f;
-            ser_data_ff <= ser_data_f;
-            ser_header_ff <= ser_header_f;
         end
         else begin
-            ser_val_f <= ser_val_f;
-            ser_data_f <= ser_data_f;
+			ser_header_ff <= ser_header_ff;
             ser_val_ff <= ser_val_ff;
-            ser_data_ff <= ser_data_ff;
-            ser_header_ff <= ser_header_ff;
+			ser_data_ff <= ser_data_ff;
+            ser_val_f <= ser_val_f;
+			ser_data_f <= ser_data_f;
         end
     end
 end
 
-assign ser_data = ser_data_ff;
-assign ser_val = ser_val_ff;
-assign ser_header = ser_header_ff;
 
+assign ser_data = ser_data_ff;
+
+assign ser_val = ser_val_ff;
+
+assign ser_header = ser_header_ff;
 
 /*
 ila_buffer ila_buffer (
