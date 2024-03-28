@@ -1,0 +1,9 @@
++incdir+.
+noc_axi4_pkg.sv
+noc_axi4_addr_aligner.sv
+noc_axi4_bridge.sv
+noc_axi4_decoder.sv
+noc_axi4_encoder_comb.sv
+noc_axi4_encoder.sv
+noc_axi4_read_pipe.sv
+noc_axi4_write_pipe.sv
