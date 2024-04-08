@@ -138,7 +138,7 @@ import noc_axi4_pkg::*;
 
 
     assign flit_encoder_data = flit_write_resp_vld ? flit_write_resp_data : flit_read_resp_data;
-    assign flit_encoder_vld = flit_write_resp_vld ? 1'b1 : flit_read_resp_vld;
+    assign flit_encoder_vld = flit_write_resp_vld ? arb_r == S_WRITE : arb_r == S_READ;
 
     assign flit_write_resp_rdy = arb_r == S_WRITE & flit_encoder_rdy;
     assign flit_read_resp_rdy = arb_r == S_READ & flit_encoder_rdy;
