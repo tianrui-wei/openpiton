@@ -124,7 +124,7 @@ import noc_axi4_pkg::*;
                 end
             end
             S_WRITE: begin
-                if (flit_write_resp_vld & flit_write_rdy) begin
+                if (flit_write_resp_vld & flit_write_resp_rdy) begin
                     arb_n = S_IDLE; 
                 end
             end
