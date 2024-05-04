@@ -9,8 +9,10 @@ import noc_axi4_pkg::*;
 always_comb begin : proc_flit_out
 	flit_out                 = flit_op_data.head_flit;
 	// write response does not carry payload
-	if (flit_op_data.is_write) flit_out[`MSG_LENGTH] = '0;
+	flit_out[63:30] = flit_op_data.src_flit[63:30];
 	flit_out[`MSG_OPTIONS_1] = '0;
+	//FIXME: this doesn't work for NC
+	flit_out[`MSG_LENGTH] = flit_op_data.is_write ? '0 : `PAYLOAD_LEN;
 	unique case (flit_op_data.head_flit[`MSG_TYPE])
 		`MSG_TYPE_LOAD_MEM : begin
 			flit_out[`MSG_TYPE] = `MSG_TYPE_LOAD_MEM_ACK;
