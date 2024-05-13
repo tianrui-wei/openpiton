@@ -48,7 +48,7 @@ always_comb begin : proc_state
 	unique case (state_r)
 	S_HEADER: begin
 		if (flit_op_vld & flit_op_rdy & ~flit_op_data.is_write) begin
-			remaining_flit_n = `PAYLOAD_LEN - flit_op_data.num_flit - 1;
+			remaining_flit_n = `PAYLOAD_LEN - flit_op_data.num_flit;
 			data_flits_n = flit_op_data.data_flits;
 		end
 	end
