@@ -25,7 +25,7 @@ module noc_axi4_decoder
 	no_misaligned_req: assert property (@(posedge clk) disable iff (~rst_n) flit_op_vld && (flit_op_data.size == `MSG_DATA_SIZE_64B) |-> 
 		(flit_op_data.addr[5:0] == '0));
 
-	typedef enum logic [3:0] {S_IDLE, S_HEADER, S_ADDR, S_SRC, S_DATA, S_SEND} recv_state_t;
+	typedef enum logic [3:0] {S_ADDR, S_SRC, S_DATA, S_SEND, S_RECV} recv_state_t;
 
 	wire flit_in_hs = flit_in_val & flit_in_rdy;
 
@@ -33,10 +33,12 @@ module noc_axi4_decoder
 	flit_num_t flit_ctr_r, flit_ctr_n;
 	recv_state_t state_r, state_n;
 	flit_op_t flit_op_r, flit_op_n;
+
+	assign flit_op_data = flit_op_r;
 	
 	always_ff @(posedge clk) begin : proc_msg_state
 		if(~rst_n) begin
-			state_r    <= S_IDLE;
+			state_r    <= S_ADDR;
 			flit_ctr_r <= 'X;
 			flit_op_r  <= 'X;
 		end else begin
@@ -54,52 +56,50 @@ module noc_axi4_decoder
 		flit_op_n  = flit_op_r;
 		flit_ctr_n = flit_ctr_r;
 		unique case (state_r)
-			S_IDLE : begin
+			S_ADDR : begin
 				if (flit_in_hs) begin
 					assert(flit_in_data >= 3);
-					state_n             = S_ADDR;
+					state_n             = S_SRC;
 					flit_op_n.head_flit = flit_in_data;
 					// ASSERT: is write => flit != 0
-					flit_op_n.num_flit  = flit_in_data[`MSG_LENGTH] - 3;
-					flit_op_n.is_write = flit_in_data != 3;
+					flit_op_n.num_flit  = flit_in_data[`MSG_LENGTH] - 2;
+					flit_op_n.is_write = flit_in_data[`MSG_LENGTH] != 2;
 					flit_op_n.uncachable = (flit_in_data[`MSG_TYPE] == `MSG_TYPE_NC_STORE_REQ) || (flit_in_data[`MSG_TYPE] == `MSG_TYPE_NC_LOAD_REQ);
 					flit_ctr_n          = 0;
 					flit_op_n.data_flits = 'X; // poison the data flits
 				end
 			end
-			S_ADDR : begin
-				if (flit_in_hs) begin
-					flit_op_n.addr_flit = flit_in_data;
-					flit_op_n.addr = flit_in_data[`MSG_ADDR_];
-					flit_op_n.size = flit_in_data[`MSG_DATA_SIZE_];
-					state_n             = S_SRC;
-				end
-			end
 			S_SRC : begin
 				if (flit_in_hs) begin
-					flit_op_n.src_flit = flit_in_data;
-					// if there's no data, jump directly into the next phase. Otherwise, wait to receive data
-					state_n            = flit_op_r.num_flit == 0 ? S_SEND : S_DATA;
+					flit_op_n.addr_flit = flit_in_data;
+					flit_op_n.addr = '0;
+					flit_op_n.addr[30:0] = flit_in_data[`MSG_ADDR_];
+					flit_op_n.size = flit_in_data[`MSG_DATA_SIZE_];
+					state_n             = S_DATA;
 				end
 			end
 			S_DATA : begin
 				if (flit_in_hs) begin
+					flit_op_n.src_flit = flit_in_data;
+					// if there's no data, jump directly into the next phase. Otherwise, wait to receive data
+					state_n            = flit_op_r.num_flit == 0 ? S_SEND : S_RECV;
+				end
+			end
+			S_RECV : begin
+				if (flit_in_hs) begin
 					flit_ctr_n = flit_ctr_r + 1;
-					flit_op_n.data_flits[flit_ctr_r] = flit_in_data;
-					if (flit_ctr_r == flit_op_r.num_flit) begin
+					flit_op_n.data_flits[7 - flit_ctr_r] = flit_in_data;
+					if (flit_ctr_r == flit_op_r.num_flit - 1) begin
 						state_n = S_SEND;
 					end
 				end
 			end
 			S_SEND : begin
 				if (flit_op_vld & flit_op_rdy) begin
-					state_n = S_IDLE;
+					state_n = S_ADDR;
 				end
 			end
 		endcase
 	end
-
-
-
 
 endmodule : noc_axi4_decoder

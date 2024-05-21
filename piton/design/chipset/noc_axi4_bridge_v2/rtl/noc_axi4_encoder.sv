@@ -37,23 +37,27 @@ end
 assign flit_out_val = state_r == S_HEADER ? flit_op_vld : 1'b1;
 assign flit_op_rdy = state_r == S_HEADER ? flit_out_rdy : 1'b0;
 
-
+flit_t header_flit_output;
 flit_t data_flit_output;
+
+assign flit_out = state_r == S_HEADER ? header_flit_output : data_flit_output;
+
+	assign data_flit_output = data_flits_r[`PAYLOAD_LEN - remaining_flit_r];
+//	assign data_flit_output = data_flits_r[remaining_flit_r - 1];
 
 always_comb begin : proc_state	
 	state_n = state_r;
 	remaining_flit_n = remaining_flit_r;
 	data_flits_n = data_flits_r;
-	data_flit_output = 'X;
 	unique case (state_r)
 	S_HEADER: begin
 		if (flit_op_vld & flit_op_rdy & ~flit_op_data.is_write) begin
 			remaining_flit_n = `PAYLOAD_LEN - flit_op_data.num_flit;
 			data_flits_n = flit_op_data.data_flits;
+			state_n = S_DATA;
 		end
 	end
 	S_DATA: begin
-		data_flit_output = data_flits_r[remaining_flit_r];
 		if (flit_out_val & flit_out_rdy) begin
 			remaining_flit_n = remaining_flit_r - 1;
 			if (remaining_flit_r == 1) begin
@@ -64,5 +68,9 @@ always_comb begin : proc_state
 	endcase
 end
 
+ noc_axi4_encoder_comb header_flit_encoder
+(.flit_op_data (flit_op_data),
+	.flit_out(header_flit_output)
+	);
 
 endmodule : noc_axi4_encoder

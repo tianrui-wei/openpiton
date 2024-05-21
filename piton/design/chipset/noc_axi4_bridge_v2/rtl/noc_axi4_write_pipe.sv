@@ -44,6 +44,7 @@ import noc_axi4_pkg::*;
     output logic                               m_axi_bready	
 );
 	assert_only_write: assert property (@(posedge clk) disable iff (~rst_n) flit_op_vld |-> flit_op_data.is_write);
+	assert_aw_proper_size: assert property (@(posedge clk) disable iff (~rst_n) m_axi_awvalid |-> m_axi_awsize != 3'b111);
 	assert_b_valid: assert property (@(posedge clk) disable iff (~rst_n) m_axi_bvalid |-> m_axi_bresp == '0 && m_axi_bid == '0);
 
 // slow fsm for blocking operation only
@@ -53,10 +54,43 @@ flit_op_t flit_op_r, flit_op_n;
 
 state_t state_r, state_n;
 
+	wire [5:0] address_offset = flit_op_r.addr[5:0];
+	wire [511:0] casted_1d_data = flit_op_r.data_flits;
+	logic [63:0] write_strb;
+
+	always_comb begin
+		unique case (flit_op_r.size)
+			`MSG_DATA_SIZE_1B: begin
+				write_strb = `AXI4_STRB_WIDTH'h1;
+			end
+			`MSG_DATA_SIZE_2B: begin
+				write_strb = `AXI4_STRB_WIDTH'h3;
+			end
+			`MSG_DATA_SIZE_4B: begin
+				write_strb = `AXI4_STRB_WIDTH'hf;
+			end
+			`MSG_DATA_SIZE_8B: begin
+				write_strb = `AXI4_STRB_WIDTH'hff;
+			end
+			`MSG_DATA_SIZE_16B: begin
+				write_strb = `AXI4_STRB_WIDTH'hffff;
+			end
+			`MSG_DATA_SIZE_32B: begin
+				write_strb = `AXI4_STRB_WIDTH'hffffffff;
+			end
+			`MSG_DATA_SIZE_64B: begin
+				write_strb = `AXI4_STRB_WIDTH'hffffffffffffffff;
+			end
+			default: begin
+				// fail here, should never appear
+				write_strb = 'X;
+			end
+		endcase
+	end
+
 	assign m_axi_awid = '0;
 	assign m_axi_awaddr = flit_op_r.addr;
     assign m_axi_awlen    = `AXI4_LEN_WIDTH'b0; // Use only length-1 bursts
-    assign m_axi_awsize   = `AXI4_SIZE_WIDTH'b110; // Always transfer 64 bytes
     assign m_axi_awburst  = `AXI4_BURST_WIDTH'b01; // fixed address in bursts (doesn't matter cause we use length-1 bursts)
     assign m_axi_awlock   = 1'b0; // Do not use locks
     assign m_axi_awcache  = `AXI4_CACHE_WIDTH'b11; // Non-cacheable bufferable requests
@@ -65,11 +99,13 @@ state_t state_r, state_n;
     assign m_axi_awregion = `AXI4_REGION_WIDTH'b0; // Do not use regions
     assign m_axi_awuser   = `AXI4_USER_WIDTH'b0; // Do not use user field
     assign m_axi_awvalid = state_r == S_AW;
-    // valid, ready
+
+	// valid, ready
+    assign m_axi_awsize   = flit_op_r.size - 1; // Always transfer 64 bytes
 
     assign m_axi_wid = '0;
-    assign m_axi_wdata = flit_op_r.data_flits;
-    assign m_axi_wstrb = '1;
+    assign m_axi_wdata = casted_1d_data << (8 * address_offset);
+    assign m_axi_wstrb = write_strb << address_offset;
     assign m_axi_wlast = 1'b1;
     assign m_axi_wvalid = state_r == S_W;
     assign m_axi_wuser    = `AXI4_USER_WIDTH'b0; // Do not use user field
