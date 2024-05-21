@@ -659,15 +659,14 @@ set CHIPSET_RTL_IMPL_FILES [list \
     "${DV_ROOT}/design/chipset/mc/rtl/noc_mig_bridge.v" \
     "${DV_ROOT}/design/chipset/mc/rtl/memory_zeroer.v" \
     "${DV_ROOT}/design/chipset/noc_axilite_bridge/rtl/noc_axilite_bridge.v" \
-    "${DV_ROOT}/design/chipset/noc_axi4_bridge/rtl/noc_axi4_bridge.v" \
-    "${DV_ROOT}/design/chipset/noc_axi4_bridge/rtl/noc_axi4_bridge_ser.v" \
-    "${DV_ROOT}/design/chipset/noc_axi4_bridge/rtl/noc_axi4_bridge_deser.v" \
-    "${DV_ROOT}/design/chipset/noc_axi4_bridge/rtl/noc_axi4_bridge_read.v" \
-    "${DV_ROOT}/design/chipset/noc_axi4_bridge/rtl/noc_axi4_bridge_write.v" \
-    "${DV_ROOT}/design/chipset/noc_axi4_bridge/rtl/noc_axi4_bridge_buffer.v" \
-    "${DV_ROOT}/design/chipset/noc_axi4_bridge/rtl/noc_axi4_bridge_sram_data.v" \
-    "${DV_ROOT}/design/chipset/noc_axi4_bridge/rtl/noc_axi4_bridge_sram_req.v" \
-    "${DV_ROOT}/design/chipset/noc_axi4_bridge/rtl/axi4_zeroer.v" \
+    "${DV_ROOT}/design/chipset/noc_axi4_bridge/rtl/noc_axi4_pkg.sv" \
+    "${DV_ROOT}/design/chipset/noc_axi4_bridge/rtl/noc_axi4_addr_aligner.sv " \
+    "${DV_ROOT}/design/chipset/noc_axi4_bridge/rtl/noc_axi4_bridge.sv " \
+    "${DV_ROOT}/design/chipset/noc_axi4_bridge/rtl/noc_axi4_decoder.sv " \
+    "${DV_ROOT}/design/chipset/noc_axi4_bridge/rtl/noc_axi4_encoder_comb.sv " \
+    "${DV_ROOT}/design/chipset/noc_axi4_bridge/rtl/noc_axi4_encoder.sv " \
+    "${DV_ROOT}/design/chipset/noc_axi4_bridge/rtl/noc_axi4_read_pipe.sv " \
+    "${DV_ROOT}/design/chipset/noc_axi4_bridge/rtl/noc_axi4_write_pipe.sv " \
     "${DV_ROOT}/design/chipset/axi_sd_bridge/rtl/axi_sd_bridge.v" \
     "${DV_ROOT}/design/chipset/axi_sd_bridge/rtl/spi_master.v" \
     "${DV_ROOT}/design/chipset/axi_sd_bridge/rtl/init_sd.v" \
