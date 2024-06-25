@@ -155,7 +155,7 @@ _start:
 1:bgeu a0, a1, 1b
 
   # give each core 128KB of stack + TLS
-#define STKSHIFT 17
+#define STKSHIFT 20
   sll a2, a0, STKSHIFT
   add tp, tp, a2
   add sp, a0, 1

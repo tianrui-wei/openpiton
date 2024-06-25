@@ -89,7 +89,7 @@ state_t state_r, state_n;
 	end
 
 	assign m_axi_awid = '0;
-	assign m_axi_awaddr = flit_op_r.addr;
+	assign m_axi_awaddr = {flit_op_r.addr[`PHY_ADDR_WIDTH-1:5], 5'b0};
     assign m_axi_awlen    = `AXI4_LEN_WIDTH'b0; // Use only length-1 bursts
     assign m_axi_awburst  = `AXI4_BURST_WIDTH'b01; // fixed address in bursts (doesn't matter cause we use length-1 bursts)
     assign m_axi_awlock   = 1'b0; // Do not use locks
@@ -101,7 +101,8 @@ state_t state_r, state_n;
     assign m_axi_awvalid = state_r == S_AW;
 
 	// valid, ready
-    assign m_axi_awsize   = flit_op_r.size - 1; // Always transfer 64 bytes
+//    assign m_axi_awsize   = flit_op_r.size - 1; // Always transfer 64 bytes
+    assign m_axi_awsize   =  3'b110; // Always transfer 64 bytes
 
     assign m_axi_wid = '0;
     assign m_axi_wdata = casted_1d_data << (8 * address_offset);

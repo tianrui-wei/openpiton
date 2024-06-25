@@ -115,7 +115,7 @@ reg                             fail_flag;
 
 initial begin
 $fsdbDumpfile("tb_manycore.fsdb");
-$fsdbDumpvars(0, cmp_top);
+$fsdbDumpvars(0, "+all" ,cmp_top);
 end
 
 `ifndef VERILATOR

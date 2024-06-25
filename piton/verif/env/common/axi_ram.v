@@ -176,8 +176,8 @@ initial begin
 	for (i = 0; i < 2**22; i++) begin
 		mem[i] = '0;
 	end
-//	$readmemh("mem.image", mem);
-	$readmemh("fw_payload.image", mem);
+	$readmemh("mem.image", mem);
+//	$readmemh("fw_payload.image", mem);
 end
 
 always @* begin
