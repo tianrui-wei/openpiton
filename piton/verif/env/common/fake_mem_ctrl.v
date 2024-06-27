@@ -58,7 +58,6 @@ module fake_mem_ctrl(
     input wire noc_ready_out
 
 );
-`define AXI4_BRIDGE
 `ifdef AXI4_BRIDGE
 
 `include "noc_axi4_bridge_define.vh"

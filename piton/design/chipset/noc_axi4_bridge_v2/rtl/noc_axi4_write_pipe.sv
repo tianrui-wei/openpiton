@@ -55,37 +55,38 @@ flit_op_t flit_op_r, flit_op_n;
 state_t state_r, state_n;
 
 	wire [5:0] address_offset = flit_op_r.addr[5:0];
-	wire [511:0] casted_1d_data = flit_op_r.data_flits;
+	wire [511:0] casted_1d_data = {flit_op_r.data_flits[0], flit_op_r.data_flits[1], flit_op_r.data_flits[2], flit_op_r.data_flits[3], flit_op_r.data_flits[4], flit_op_r.data_flits[5], flit_op_r.data_flits[6], flit_op_r.data_flits[7]};
 	logic [63:0] write_strb;
 
 	always_comb begin
-		unique case (flit_op_r.size)
-			`MSG_DATA_SIZE_1B: begin
-				write_strb = `AXI4_STRB_WIDTH'h1;
-			end
-			`MSG_DATA_SIZE_2B: begin
-				write_strb = `AXI4_STRB_WIDTH'h3;
-			end
-			`MSG_DATA_SIZE_4B: begin
-				write_strb = `AXI4_STRB_WIDTH'hf;
-			end
-			`MSG_DATA_SIZE_8B: begin
-				write_strb = `AXI4_STRB_WIDTH'hff;
-			end
-			`MSG_DATA_SIZE_16B: begin
-				write_strb = `AXI4_STRB_WIDTH'hffff;
-			end
-			`MSG_DATA_SIZE_32B: begin
-				write_strb = `AXI4_STRB_WIDTH'hffffffff;
-			end
-			`MSG_DATA_SIZE_64B: begin
-				write_strb = `AXI4_STRB_WIDTH'hffffffffffffffff;
-			end
-			default: begin
-				// fail here, should never appear
-				write_strb = 'X;
-			end
-		endcase
+		write_strb = `AXI4_STRB_WIDTH'hffffffffffffffff;
+//		unique case (flit_op_r.size)
+//			`MSG_DATA_SIZE_1B: begin
+//				write_strb = `AXI4_STRB_WIDTH'h1;
+//			end
+//			`MSG_DATA_SIZE_2B: begin
+//				write_strb = `AXI4_STRB_WIDTH'h3;
+//			end
+//			`MSG_DATA_SIZE_4B: begin
+//				write_strb = `AXI4_STRB_WIDTH'hf;
+//			end
+//			`MSG_DATA_SIZE_8B: begin
+//				write_strb = `AXI4_STRB_WIDTH'hff;
+//			end
+//			`MSG_DATA_SIZE_16B: begin
+//				write_strb = `AXI4_STRB_WIDTH'hffff;
+//			end
+//			`MSG_DATA_SIZE_32B: begin
+//				write_strb = `AXI4_STRB_WIDTH'hffffffff;
+//			end
+//			`MSG_DATA_SIZE_64B: begin
+//				write_strb = `AXI4_STRB_WIDTH'hffffffffffffffff;
+//			end
+//			default: begin
+//				// fail here, should never appear
+//				write_strb = 'X;
+//			end
+//		endcase
 	end
 
 	assign m_axi_awid = '0;
@@ -105,8 +106,8 @@ state_t state_r, state_n;
     assign m_axi_awsize   =  3'b110; // Always transfer 64 bytes
 
     assign m_axi_wid = '0;
-    assign m_axi_wdata = casted_1d_data << (8 * address_offset);
-    assign m_axi_wstrb = write_strb << address_offset;
+    assign m_axi_wdata = casted_1d_data;
+    assign m_axi_wstrb = write_strb;
     assign m_axi_wlast = 1'b1;
     assign m_axi_wvalid = state_r == S_W;
     assign m_axi_wuser    = `AXI4_USER_WIDTH'b0; // Do not use user field

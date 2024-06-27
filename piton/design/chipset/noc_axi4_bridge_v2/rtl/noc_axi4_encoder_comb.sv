@@ -10,7 +10,11 @@ always_comb begin : proc_flit_out
 	flit_out                 = flit_op_data.head_flit;
 	// write response does not carry payload
 	flit_out[63:30] = flit_op_data.src_flit[63:30];
-	flit_out[`MSG_OPTIONS_1] = '0;
+	flit_out[`MSG_MSHRID] = flit_op_data.head_flit[`MSG_MSHRID];
+	flit_out[`MSG_MESI] = `MSG_MESI_BITS'b0;
+	flit_out[`MSG_L2_MISS] = flit_op_data.addr_flit[55];
+	flit_out[`MSG_SUBLINE_ID] = `MSG_SUBLINE_ID_WIDTH'b0;
+	flit_out[`MSG_LAST_SUBLINE] = `MSG_LAST_SUBLINE_WIDTH'b1;
 	//FIXME: this doesn't work for NC
 	flit_out[`MSG_LENGTH] = flit_op_data.is_write ? '0 : `PAYLOAD_LEN;
 	unique case (flit_op_data.head_flit[`MSG_TYPE])
