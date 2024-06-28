@@ -90,6 +90,9 @@ import noc_axi4_pkg::*;
     logic flit_read_vld;
     logic flit_read_rdy;
 
+	logic decoder_src_bridge_vr_noc2_rdy;
+	logic decoder_src_bridge_vr_noc2_val;
+
 	logic flit_encoder_rdy, flit_encoder_vld;
 	flit_op_t flit_encoder_data;
 
@@ -142,13 +145,15 @@ import noc_axi4_pkg::*;
 
     assign flit_write_resp_rdy = arb_r == S_WRITE & flit_encoder_rdy;
     assign flit_read_resp_rdy = arb_r == S_READ & flit_encoder_rdy;
+	assign src_bridge_vr_noc2_rdy = phy_init_done & decoder_src_bridge_vr_noc2_rdy;
+	assign decoder_src_bridge_vr_noc2_val = phy_init_done & src_bridge_vr_noc2_val;
 
 noc_axi4_decoder i_noc_axi4_decoder (
     .clk         (clk                   ),
     .rst_n       (rst_n                 ),
-    .flit_in_val (src_bridge_vr_noc2_val),
+    .flit_in_val (decoder_src_bridge_vr_noc2_val),
     .flit_in_data(src_bridge_vr_noc2_dat),
-    .flit_in_rdy (src_bridge_vr_noc2_rdy),
+    .flit_in_rdy (decoder_src_bridge_vr_noc2_rdy),
     .flit_op_data(flit_op_data          ),
     .flit_op_vld (flit_op_vld           ),
     .flit_op_rdy (flit_op_rdy           )
