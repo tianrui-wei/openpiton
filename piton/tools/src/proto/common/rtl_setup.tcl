@@ -657,14 +657,14 @@ set CHIPSET_RTL_IMPL_FILES [list \
     "${DV_ROOT}/design/chipset/mc/rtl/noc_mig_bridge.v" \
     "${DV_ROOT}/design/chipset/mc/rtl/memory_zeroer.v" \
     "${DV_ROOT}/design/chipset/noc_axilite_bridge/rtl/noc_axilite_bridge.v" \
-    "${DV_ROOT}/design/chipset/noc_axi4_bridge/rtl/noc_axi4_pkg.sv" \
-    "${DV_ROOT}/design/chipset/noc_axi4_bridge/rtl/noc_axi4_addr_aligner.sv " \
-    "${DV_ROOT}/design/chipset/noc_axi4_bridge/rtl/noc_axi4_bridge.sv " \
-    "${DV_ROOT}/design/chipset/noc_axi4_bridge/rtl/noc_axi4_decoder.sv " \
-    "${DV_ROOT}/design/chipset/noc_axi4_bridge/rtl/noc_axi4_encoder_comb.sv " \
-    "${DV_ROOT}/design/chipset/noc_axi4_bridge/rtl/noc_axi4_encoder.sv " \
-    "${DV_ROOT}/design/chipset/noc_axi4_bridge/rtl/noc_axi4_read_pipe.sv " \
-    "${DV_ROOT}/design/chipset/noc_axi4_bridge/rtl/noc_axi4_write_pipe.sv " \
+    "${DV_ROOT}/design/chipset/noc_axi4_bridge_v2/rtl/noc_axi4_pkg.sv" \
+    "${DV_ROOT}/design/chipset/noc_axi4_bridge_v2/rtl/noc_axi4_addr_aligner.sv " \
+    "${DV_ROOT}/design/chipset/noc_axi4_bridge_v2/rtl/noc_axi4_bridge.sv " \
+    "${DV_ROOT}/design/chipset/noc_axi4_bridge_v2/rtl/noc_axi4_decoder.sv " \
+    "${DV_ROOT}/design/chipset/noc_axi4_bridge_v2/rtl/noc_axi4_encoder_comb.sv " \
+    "${DV_ROOT}/design/chipset/noc_axi4_bridge_v2/rtl/noc_axi4_encoder.sv " \
+    "${DV_ROOT}/design/chipset/noc_axi4_bridge_v2/rtl/noc_axi4_read_pipe.sv " \
+    "${DV_ROOT}/design/chipset/noc_axi4_bridge_v2/rtl/noc_axi4_write_pipe.sv " \
     "${DV_ROOT}/design/chipset/axi_sd_bridge/rtl/axi_sd_bridge.v" \
     "${DV_ROOT}/design/chipset/axi_sd_bridge/rtl/spi_master.v" \
     "${DV_ROOT}/design/chipset/axi_sd_bridge/rtl/init_sd.v" \
@@ -739,7 +739,7 @@ set CHIPSET_INCLUDE_FILES [list \
     "${DV_ROOT}/design/chipset/include/mc_define.h" \
     "${DV_ROOT}/design/chipset/include/uart16550_define.vh" \
     "${DV_ROOT}/design/chipset/include/chipset_define.vh" \
-    "${DV_ROOT}/design/chipset/noc_axi4_bridge/rtl/noc_axi4_bridge_define.vh" \
+    "${DV_ROOT}/design/chipset/noc_axi4_bridge_v2/rtl/noc_axi4_bridge_define.vh" \
     "${DV_ROOT}/design/chip/tile/ariane/src/common_cells/include/common_cells/registers.svh"
 ]
 
