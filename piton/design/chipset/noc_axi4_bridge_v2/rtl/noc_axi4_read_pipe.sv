@@ -96,7 +96,8 @@ import noc_axi4_pkg::*;
     			if (m_axi_rvalid & m_axi_rready) begin
     				state_n = S_SEND;
 //    				op_n.data_flits = (m_axi_rdata >> (8 * address_offset));
-    				op_n.data_flits = m_axi_rdata;
+    				//op_n.data_flits = m_axi_rdata;
+    				op_n.data_flits = {m_axi_rdata[63:0], m_axi_rdata[127:64], m_axi_rdata[191:128], m_axi_rdata[255:192], m_axi_rdata[319:256], m_axi_rdata[383:320], m_axi_rdata[447:384], m_axi_rdata[511:448]};
     			end
     		end
     		S_SEND: begin

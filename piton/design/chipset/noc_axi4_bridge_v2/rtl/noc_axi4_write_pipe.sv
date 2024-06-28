@@ -55,7 +55,7 @@ flit_op_t flit_op_r, flit_op_n;
 state_t state_r, state_n;
 
 	wire [5:0] address_offset = flit_op_r.addr[5:0];
-	wire [511:0] casted_1d_data = {flit_op_r.data_flits[0], flit_op_r.data_flits[1], flit_op_r.data_flits[2], flit_op_r.data_flits[3], flit_op_r.data_flits[4], flit_op_r.data_flits[5], flit_op_r.data_flits[6], flit_op_r.data_flits[7]};
+	wire [511:0] casted_1d_data = flit_op_r.data_flits;
 	logic [63:0] write_strb;
 
 	always_comb begin

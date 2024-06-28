@@ -38,13 +38,8 @@ ${RV64_TARGET_TRIPLE}-objdump -d diag.exe | grep "<pass>:" | awk '{printf("good_
 ${RV64_TARGET_TRIPLE}-objdump -d diag.exe | grep "<fail>:" | awk '{printf("bad_trap %s X %s\n", $1, $1);}' >>symbol.tbl
 ${RV64_TARGET_TRIPLE}-objdump -d diag.exe --disassemble-all --disassemble-zeroes --section=.text --section=.text.startup --section=.text.init --section=.data  > diag.dump
 
-${RV64_TARGET_TRIPLE}-objcopy --reverse-bytes=64 -I binary -O binary diag.o diag.o.rev
-${RV64_TARGET_TRIPLE}-objcopy --reverse-bytes=8 -I binary -O verilog diag.o.rev diag.memh.tmp
-tr -d ' ' <diag.memh.tmp >diag.memh.tmp2
-perl -pe 's/\n// if $. % 2 == 0' diag.memh.tmp2 >diag.memh.tmp
-perl -pe 's/\r//' diag.memh.tmp >diag.memh.tmp2
-perl -pe 's/\n// if $. % 2 == 0' diag.memh.tmp2 >diag.memh.tmp
-perl -pe 's/\r//' diag.memh.tmp >diag.memh
+printf "@00000000\n" >diag.memh
+xxd -g 8 -c 64 diag.o | awk '{printf("%s %s %s %s %s %s %s %s\n", $2, $3, $4, $5, $6, $7, $8, $9);}' | tr -d ' ' >> diag.memh
 
 #create empty diag.ev
 touch diag.ev
