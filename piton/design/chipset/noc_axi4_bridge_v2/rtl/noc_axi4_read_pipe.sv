@@ -42,8 +42,9 @@ import noc_axi4_pkg::*;
     flit_op_t op_r, op_n;
 	wire [5:0] address_offset = op_r.addr[5:0];
 
+    assign m_axi_arid     = '0;
    	assign m_axi_arlen    = `AXI4_LEN_WIDTH'b0; // Use only length-1 bursts
-    assign m_axi_arburst  = `AXI4_BURST_WIDTH'b01; // fixed address in bursts (doesn't matter cause we use length-1 bursts)
+    assign m_axi_arburst  = `AXI4_BURST_WIDTH'b00; // fixed address in bursts (doesn't matter cause we use length-1 bursts)
     assign m_axi_arlock   = 1'b0; // Do not use locks
     assign m_axi_arcache  = `AXI4_CACHE_WIDTH'b11; // Non-cacheable bufferable requests
     assign m_axi_arprot   = `AXI4_PROT_WIDTH'b0; // Data access, non-secure access, unpriveleged access
@@ -55,7 +56,7 @@ import noc_axi4_pkg::*;
 //    assign m_axi_arsize   = op_r.size - 1;
 //    assign m_axi_arsize   = op_r.size - 1;
     assign m_axi_arsize   = 3'b110;
-    assign m_axi_araddr = {op_r.addr[`PHY_ADDR_WIDTH-1:5], 5'b0};
+    assign m_axi_araddr = {op_r.addr[`PHY_ADDR_WIDTH-1:6], 6'b0};
 
     assign m_axi_arvalid = state_r == S_AR;
     assign m_axi_rready = state_r == S_R;

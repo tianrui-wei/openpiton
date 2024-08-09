@@ -73,7 +73,7 @@ module noc_axi4_decoder
 				if (flit_in_hs) begin
 					flit_op_n.addr_flit = flit_in_data;
 					flit_op_n.addr = '0;
-					flit_op_n.addr[30:0] = flit_in_data[`MSG_ADDR_];
+					flit_op_n.addr[`PHY_ADDR_WIDTH-1:0] = flit_in_data[`MSG_ADDR_];
 					flit_op_n.size = flit_in_data[`MSG_DATA_SIZE_];
 					state_n             = S_DATA;
 				end
